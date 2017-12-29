@@ -75,7 +75,7 @@ public class Login extends AppCompatActivity {
 
 
         }
-
+//
         @Override
         public void getAuthenticationDetails(AuthenticationContinuation authenticationContinuation, String username) {
             Toast.makeText(getApplicationContext(),"2",Toast.LENGTH_LONG).show();
