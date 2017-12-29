@@ -36,7 +36,7 @@ public class Login extends AppCompatActivity {
         final GridLayout LO = (GridLayout) findViewById( R.id.layout1 );
         LO.setColumnCount(3);
         LO.setRowCount(2);
-
+//
        // text_mail=(TextView)findViewById(R.id.text_Mail);
        // text_pwd=(TextView)findViewById(R.id.text_pwd);
         text_forgot=(TextView)findViewById(R.id.text_Forgot);
