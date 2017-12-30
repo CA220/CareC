@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CCC</string>
+    <string name="app_name">CareCenter</string>
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
@@ -14,4 +14,6 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="drawer_open">Drawer open</string>
+    <string name="drawer_close">Drawer close</string>
 </resources>
