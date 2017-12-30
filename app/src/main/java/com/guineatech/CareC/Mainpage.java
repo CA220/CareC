@@ -34,8 +34,8 @@ public class Mainpage extends AppCompatActivity {
             }
         });
 
-        // 用toolbar做為APP的ActionBar
-        setSupportActionBar(toolbar);
+        // 用toolbar做為APP的ActionBar ????
+       // setSupportActionBar(toolbar);
 
         // 將drawerLayout和toolbar整合，會出現「三」按鈕
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
