@@ -1,5 +1,6 @@
 package com.guineatech.CareC;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -31,11 +32,14 @@ public class Mainpage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // 點Button時要做的事寫在這裡..
+                Intent it=new Intent();
+                it.setClass(Mainpage.this,QR.class);
+                startActivityForResult(it,1);
             }
         });
 
         // 用toolbar做為APP的ActionBar ????
-       // setSupportActionBar(toolbar);
+       setSupportActionBar(toolbar);
 
         // 將drawerLayout和toolbar整合，會出現「三」按鈕
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
