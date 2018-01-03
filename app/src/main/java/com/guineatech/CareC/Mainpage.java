@@ -9,16 +9,28 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.amazonaws.mobileconnectors.dynamodbv2.document.Table;
+import com.amazonaws.mobileconnectors.dynamodbv2.document.datatype.Primitive;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+
 public class Mainpage extends AppCompatActivity {
-    FloatingActionButton btnAdd;
-    DrawerLayout drawerLayout;
-    NavigationView navigation_view;
-    Toolbar toolbar;
+    private FloatingActionButton btnAdd;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigation_view;
+    private Toolbar toolbar;
+    private AmazonDynamoDBClient dbClient;
+    private Table dbTable;
+    private String DYNAMODB_TABLE="tusre";
+    private RecyclerView mRecyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +39,10 @@ public class Mainpage extends AppCompatActivity {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         navigation_view = (NavigationView) findViewById(R.id.navigation_view);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-
+        dbClient = new AmazonDynamoDBClient(AppHelper.credentialsProvider);
+        dbClient.setRegion(Region.getRegion(Regions.US_WEST_2));
+        dbTable=Table.loadTable(dbClient, DYNAMODB_TABLE);
+        dbTable.query(new Primitive(AppHelper.userid)).getAllResults();
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -38,7 +53,7 @@ public class Mainpage extends AppCompatActivity {
             }
         });
 
-        // 用toolbar做為APP的ActionBar ????
+        // 用toolbar做為APP的ActionBar
        setSupportActionBar(toolbar);
 
         // 將drawerLayout和toolbar整合，會出現「三」按鈕

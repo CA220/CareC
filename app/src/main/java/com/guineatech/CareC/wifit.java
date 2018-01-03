@@ -44,7 +44,7 @@ public class wifit extends AppCompatActivity {
         setContentView(R.layout.activity_wifit);
         Intent it=this.getIntent();
          bcode=it.getStringExtra("bcode");
-        spinnerWifis = (Spinner) findViewById(R.id.spinner);
+        spinnerWifis = (Spinner)findViewById(R.id.spinner);
 
         if (ActivityCompat.checkSelfPermission(wifit.this, ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
