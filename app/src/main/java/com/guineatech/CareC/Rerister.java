@@ -36,12 +36,17 @@ public class Rerister extends AppCompatActivity {
                 String pwd =et_pwds.getText().toString();
                 String pc=et_pwd.getText().toString();
                 String email=et_Mail.getText().toString();
-                CognitoUserAttributes userAttributes = new CognitoUserAttributes();
-                userAttributes.addAttribute("email", email);
-                AppHelper.userid= email.replace("@","-at-");
-                showWaitDialog("Signing up...");
-                AppHelper.getPool().signUpInBackground(AppHelper.userid, pwd, userAttributes, null, signupCallback);
-
+                if(email!=null&&pwd!=null&&pc!=null) {
+                    CognitoUserAttributes userAttributes = new CognitoUserAttributes();
+                    userAttributes.addAttribute("email", email);
+                    AppHelper.userid = email.replace("@", "-at-");
+                    showWaitDialog("Signing up...");
+                    AppHelper.getPool().signUpInBackground(AppHelper.userid, pwd, userAttributes, null, signupCallback);
+                }
+                else
+                {
+                    Toast.makeText(view.getContext(), "Can't null", Toast.LENGTH_LONG).show();
+                }
 
 
 
