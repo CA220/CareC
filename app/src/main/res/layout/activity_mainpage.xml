@@ -27,12 +27,12 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin">
 
-            <android.support.v7.widget.RecyclerView
+            <ListView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:paddingBottom="72dp" />
+                android:layout_alignParentBottom="true"
+                />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/btnAdd"

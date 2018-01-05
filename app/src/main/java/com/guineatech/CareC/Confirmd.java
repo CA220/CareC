@@ -50,7 +50,7 @@ public class Confirmd  extends AppCompatActivity {
         @Override
         public void onFailure(Exception exception) {
             waitDialog.dismiss();
-            showDialogMessage("Confirmation code request has failed","Failed "+exception, true);
+            showDialogMessage("Confirmation code request has failed","Failed "+exception, false);
         }
     };
     private void showWaitDialog(String message) {
