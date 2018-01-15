@@ -43,7 +43,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private void directActivity(){
         //Intent intent = new Intent(this,LoginActivity.class);
-        Intent intent = new Intent(this,wifit.class);
+        Intent intent = new Intent(this,wifi.class);
         startActivity(intent);
         finish();
     }

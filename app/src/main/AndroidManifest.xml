@@ -25,11 +25,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Sign_Rerister">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".Login" />
         <activity android:name=".Rerister" />
@@ -37,7 +33,13 @@
         <activity android:name=".Mainpage" />
         <activity android:name=".QR"/>
         <activity android:name=".SplashActivity"/>
-        <activity android:name=".wifit"/>
+        <activity android:name=".wifi">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
 
     </application>
 

@@ -51,7 +51,7 @@ public class QR extends AppCompatActivity {
               {
                   Intent it=new Intent();
                   it.putExtra("bcode",edcode.getText().toString());
-                  it.setClass(QR.this,wifit.class);
+                  it.setClass(QR.this,wifi.class);
                   startActivity(it);
               }
           }
