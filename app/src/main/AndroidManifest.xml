@@ -33,14 +33,14 @@
         <activity android:name=".Mainpage" />
         <activity android:name=".QR"/>
         <activity android:name=".SplashActivity"/>
-        <activity android:name=".wifi">
+        <activity android:name=".wifi"/>
+        <activity android:name=".setDevice"/>
+
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
 
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
-        </activity>
+        </application>
 
-    </application>
-
-</manifest>
+    </manifest>
