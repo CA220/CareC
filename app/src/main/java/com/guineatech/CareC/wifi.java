@@ -42,7 +42,7 @@ public class wifi extends AppCompatActivity {
     private WifiManager wifiManager;
     private Spinner spinnerWifis;
     private String bcode;
-    private Button bt2;
+    private Button btstep;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,12 +50,12 @@ public class wifi extends AppCompatActivity {
         Intent it=this.getIntent();
          bcode=it.getStringExtra("bcode");
         spinnerWifis = (Spinner)findViewById(R.id.spinner);
-        bt2= (Button) findViewById(R.id.button2);
+        btstep= (Button) findViewById(R.id.bt_step);
         if (ActivityCompat.checkSelfPermission(wifi.this, ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             ActivityCompat.requestPermissions(wifi.this,new String[]{ACCESS_COARSE_LOCATION},1);
         }
-        bt2.setOnClickListener(new View.OnClickListener() {
+        btstep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                Adapter allwifi= spinnerWifis.getAdapter();
