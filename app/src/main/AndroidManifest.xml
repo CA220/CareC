@@ -32,17 +32,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".Login" />
-
-        <activity android:name=".wifi"/>
-
+        <activity android:name=".Rerister" />
         <activity android:name=".Confirmd" />
         <activity android:name=".Mainpage" />
         <activity android:name=".QR"/>
         <activity android:name=".SplashActivity"/>
-        <activity android:name=".Rerister">
+        <activity android:name=".wifi"/>
+        <activity android:name=".setDevice"/>
 
-        </activity>
 
-    </application>
+        </application>
 
-</manifest>
+    </manifest>
