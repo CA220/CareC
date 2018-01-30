@@ -20,7 +20,7 @@ import com.amazonaws.services.cognitoidentityprovider.AmazonCognitoIdentityProvi
 import com.amazonaws.services.iot.AWSIotClient;
 
 /**
- * Created by CAHans on 2017/12/28.
+ * Created by CAHans on 2017/12/28
  */
 
 public class AppHelper {
