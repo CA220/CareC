@@ -16,9 +16,6 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserAttribu
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserCodeDeliveryDetails;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class Rerister extends AppCompatActivity {
     EditText et_Mail,et_pwds,et_pwd;
     Button nexts;
@@ -36,22 +33,23 @@ public class Rerister extends AppCompatActivity {
         nexts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String pwds =et_pwds.getText().toString();
-                String pwd=et_pwd.getText().toString();
+                String pwd =et_pwds.getText().toString();
+                String pc=et_pwd.getText().toString();
                 String email=et_Mail.getText().toString();
-                if(email!=null&&pwds!=null&&pwd!=null) {
-                   // if(pwd==pwds){
-                        CognitoUserAttributes userAttributes = new CognitoUserAttributes();
-                        userAttributes.addAttribute("email", email);
-                        AppHelper.userid = email.replace("@", "-at-");
-                        showWaitDialog("Signing up...");
-                        AppHelper.getPool().signUpInBackground(AppHelper.userid, pwd, userAttributes, null, signupCallback);
+                if(email!=null&&pwd!=null&&pc!=null) {
+                    CognitoUserAttributes userAttributes = new CognitoUserAttributes();
+                    userAttributes.addAttribute("email", email);
+                    AppHelper.userid = email.replace("@", "-at-");
+                    showWaitDialog("Signing up...");
+                    AppHelper.getPool().signUpInBackground(AppHelper.userid, pwd, userAttributes, null, signupCallback);
                 }
                 else
                 {
-                    if(et_Mail.getText()==null){showDialogMessage("Sign up Fail!","Email不能為空值", false);}
-                    //Toast.makeText(view.getContext(), "Can't null", Toast.LENGTH_LONG).show();
+                    Toast.makeText(view.getContext(), "Can't null", Toast.LENGTH_LONG).show();
+
                 }
+
+
 
             }
         });
@@ -59,7 +57,13 @@ public class Rerister extends AppCompatActivity {
 
 
     //註冊
-     SignUpHandler signupCallback = new SignUpHandler() {
+
+
+
+
+
+    SignUpHandler signupCallback = new SignUpHandler() {
+
         @Override
         public void onSuccess(CognitoUser cognitoUser, boolean userConfirmed, CognitoUserCodeDeliveryDetails cognitoUserCodeDeliveryDetails) {
             // Sign-up was successful
@@ -70,25 +74,23 @@ public class Rerister extends AppCompatActivity {
                 // cognitoUserCodeDeliveryDetails will indicate where the confirmation code was sent
                 // Get the confirmation code from user
                 showDialogMessage("Sign up successful!","successful!", true);
+
+
             }
             else {
                 // The user has already been confirmed
                 showDialogMessage("Sign up successful!",et_Mail.getText().toString()+" has been Confirmed", false);
             }
+
         }
+
         @Override
         public void onFailure(Exception exception) {
             // Sign-up failed, check exception for the cause
             closeWaitDialog();
-            String warn=exception.getMessage();
-            String[] tokens = warn.split(":");
-            for (String token:tokens) {
-                System.out.println(token);
-                showDialogMessage("Sign up Fail!",token, false);
-            }
+            showDialogMessage("Sign up Fail!",et_Mail.getText().toString()+" has been Sign up", false);
         }
     };
-
 
     private void showWaitDialog(String message) {
         closeWaitDialog();
