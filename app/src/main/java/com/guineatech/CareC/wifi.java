@@ -63,8 +63,18 @@ public class wifi extends AppCompatActivity {
 
 
                 for(int v =0 ;v<c ;) {
-                    if(bcode==allwifi.getItem(v).toString())
-                        Connect(bcode,bcode,WifiCipherType.WIFICIPHER_WPA);
+                    if(bcode==allwifi.getItem(v).toString()){
+                       while (Connect(bcode,"12345678",WifiCipherType.WIFICIPHER_WPA))
+                       {
+                           try {
+// 为了避免程序一直while循环，让它睡个100毫秒在检测……..
+                               Thread.currentThread();
+                               Thread.sleep(100);
+                           } catch (InterruptedException ie) {
+                           }
+                       }
+                    break;
+                    }
                     v++;
                 }
 

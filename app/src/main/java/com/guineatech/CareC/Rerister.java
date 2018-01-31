@@ -46,6 +46,7 @@ public class Rerister extends AppCompatActivity {
                 else
                 {
                     Toast.makeText(view.getContext(), "Can't null", Toast.LENGTH_LONG).show();
+
                 }
 
 
@@ -78,7 +79,7 @@ public class Rerister extends AppCompatActivity {
             }
             else {
                 // The user has already been confirmed
-                showDialogMessage("Sign up successful!",et_Mail.getText().toString()+" has been Confirmed", true);
+                showDialogMessage("Sign up successful!",et_Mail.getText().toString()+" has been Confirmed", false);
             }
 
         }
@@ -87,7 +88,7 @@ public class Rerister extends AppCompatActivity {
         public void onFailure(Exception exception) {
             // Sign-up failed, check exception for the cause
             closeWaitDialog();
-            showDialogMessage("Sign up Fail!",et_Mail.getText().toString()+" has been Sign up", true);
+            showDialogMessage("Sign up Fail!",et_Mail.getText().toString()+" has been Sign up", false);
         }
     };
 
