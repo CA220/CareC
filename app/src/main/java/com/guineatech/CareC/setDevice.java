@@ -2,6 +2,7 @@ package com.guineatech.CareC;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -42,6 +43,7 @@ public class setDevice extends AppCompatActivity {
     private String wifissid="",wifipwd="",endpoint="a2hd4hpd193y9c.iot.us-west-2.amazonaws.com";
     String [] keycert=new String[2];
     String AWS_IOT_POLICY_NAME = "tre-Policy";
+    private AlertDialog userDialog;
     AWSIotMqttManager mqttManager;
     String keystorePath;
     //String KEYSTORE_NAME="iot_keystore",CERTIFICATE_ID="default",KEYSTORE_PASSWORD="password";
@@ -305,7 +307,17 @@ public class setDevice extends AppCompatActivity {
         builder.setTitle(title).setMessage(body).setNeutralButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+            if(exit)
+            {
+                Intent it =new Intent();
+                it.setClass(setDevice.this,Mainpage.class);
+                startActivity(it);
+                finish();
+            }
+                else
+                    {
 
+                    }
             }
         });
         userDialog = builder.create();

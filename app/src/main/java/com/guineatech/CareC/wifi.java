@@ -5,6 +5,7 @@ package com.guineatech.CareC;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 
@@ -12,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import java.util.ArrayList;
@@ -43,6 +45,7 @@ public class wifi extends AppCompatActivity {
     private Spinner spinnerWifis;
     private String bcode;
     private Button btstep;
+    private AlertDialog userDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +64,7 @@ public class wifi extends AppCompatActivity {
                Adapter allwifi= spinnerWifis.getAdapter();
                 int c=allwifi.getCount();
 
-
+                boolean checkf=false;
                 for(int v =0 ;v<c ;) {
                     if(bcode==allwifi.getItem(v).toString()){
                        while (Connect(bcode,"12345678",WifiCipherType.WIFICIPHER_WPA))
@@ -73,17 +76,45 @@ public class wifi extends AppCompatActivity {
                            } catch (InterruptedException ie) {
                            }
                        }
+                       checkf=true;
                     break;
                     }
                     v++;
                 }
-
+                if(checkf)
+                    showDialogMessage("Connect to Device","Success to Connect Device",checkf);
+                else
+                    showDialogMessage("Connect to Device","Can't no find Device\nPlease Check your Device switch to Seting Mode",checkf);
 
             }
         });
         openGPS(context);
         IsEnable();
         scan();
+    }
+
+    private void showDialogMessage(String title, String body, final boolean exit) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title).setMessage(body).setNeutralButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(exit)
+                {
+                    Intent it=new Intent();
+                    it.putExtra("wifissid","");
+                    it.putExtra("wifipassword","");
+                    it.setClass(wifi.this,wifi.class);
+                    startActivity(it);
+
+                }
+                else
+                {
+
+                }
+            }
+        });
+        userDialog = builder.create();
+        userDialog.show();
     }
 
     private void IsEnable(){
