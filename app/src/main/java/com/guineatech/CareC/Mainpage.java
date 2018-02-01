@@ -56,7 +56,7 @@ public class Mainpage extends AppCompatActivity {
                 // 點Button時要做的事寫在這裡..
                 Intent it=new Intent();
                 it.setClass(Mainpage.this,QR.class);
-                startActivityForResult(it,1);
+                startActivity(it);
             }
         });
 
