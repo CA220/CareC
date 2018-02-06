@@ -1,13 +1,22 @@
 package com.guineatech.CareC;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.graphics.Color;
+import android.icu.util.TimeZone;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.amazonaws.mobileconnectors.dynamodbv2.document.Table;
 import com.amazonaws.mobileconnectors.dynamodbv2.document.datatype.Document;
@@ -15,7 +24,22 @@ import com.amazonaws.mobileconnectors.dynamodbv2.document.datatype.Primitive;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.MonthDay;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,18 +50,64 @@ public class decive_data extends AppCompatActivity {
     private Toolbar toolbar;
     private AmazonDynamoDBClient dbClient;
     private Table dbTable;
-        private String DYNAMODB_TABLE="SSTP";
-   // private ListView mRecyclerView;
+    private String DYNAMODB_TABLE="SSTP";
+    // private ListView mRecyclerView;
     private ProgressDialog waitDialog;
-
+    TextView t0,t1,t2;
+    Button b1,b2,b3;
+    private LineChart m;
+    String BMS="";
+    XAxis x1;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.decive_data);
+
         dbClient = new AmazonDynamoDBClient(AppHelper.credentialsProvider);
         dbClient.setRegion(Region.getRegion(Regions.US_WEST_2));
+
+        m=(LineChart)findViewById(R.id.chart);
+        m.setDragEnabled(true);
+        m.setDrawingCacheEnabled(false);
+
+        x1=m.getXAxis();
+        x1.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        YAxis rightYAxis=m.getAxisRight();
+        rightYAxis.setEnabled(false);
+
+
+        t0=findViewById(R.id.textView3);
+        t1=findViewById(R.id.textView);
+        t2=findViewById(R.id.textView2);
+
+        b1=findViewById(R.id.button4);
+        b2=findViewById(R.id.button5);
+        b3=findViewById(R.id.button6);
+
+
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new  DBloaddata().execute("day");
+            }
+        });
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new  DBloaddata().execute("month");
+            }
+        });
+        b3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new  DBloaddata().execute("week");
+            }
+        });
+
+
     }
-    private  class DBloaddata extends AsyncTask<Void,Void,List<Document>>
+    private  class DBloaddata extends AsyncTask<String,Void,List<Document>>
     {
         DBloaddata()
         {
@@ -45,25 +115,122 @@ public class decive_data extends AppCompatActivity {
             waitDialog.setTitle("Load......");
             waitDialog.show();
         }
+        String howlong;
         @Override
-        protected List<Document> doInBackground(Void... voids) {
+        protected List<Document> doInBackground(String... voids) {
             dbTable= Table.loadTable(dbClient, DYNAMODB_TABLE);
-
-
+            howlong=voids[0];
             return dbTable.query(new Primitive("client_01")).getAllResults();
         }
 
         @Override
         protected void onPostExecute(List<Document> documents) {
             super.onPostExecute(documents);
+
+            final List<String>timeList =new ArrayList<>();
+            SimpleDateFormat f = new SimpleDateFormat("EEE MMM dd yyyy hh:mm:ss");
+
+            ArrayList<Entry> [] ya=new ArrayList[3];
+            ya[0] =new ArrayList<>();
+            ya[1] =new ArrayList<>();
+            ya[2] =new ArrayList<>();
+            int rrr=0;
+            if(howlong=="day") {
+                rrr=5;
+            }
+            else if(howlong=="month") {
+                rrr=6;
+            }
+            else if(howlong=="week") {
+                rrr=30;
+            }
+
+            Date d = new Date(System.currentTimeMillis());
+            String dat="";
+            long da=0;
+            int avg1=0,avg2=0,cot=0;
+            int i1=0,i2=0,i3=0;
             if(documents!=null)
             {
                /* ArrayAdapter<Document> ld = new ArrayAdapter<Document>(decive_data.this, R.layout.listlayout,R.id.text, documents);
 
                 mRecyclerView.setAdapter(ld);*/
+
+
+                try {
+                    for(Document dd:documents)
+                    {
+
+                        timeList.add(dd.get("TimeStamp").asString().substring(16,24));
+
+
+                        dat+=(dd.get("TimeStamp").asString());
+                        Date a=f.parse(dat);
+                        da=d.getTime()-a.getTime();
+                        //sum += dd.toString();
+                        //BMS=dd.get("BodyMotionState").asString()+"   ";
+                        if((da/(1000*60*60*24))<=rrr) {
+
+                            BMS+=dd.get("TimeStamp").asString()+"\n";
+                            i1 = Integer.parseInt(dd.get("BodyMotionState").asString());
+                            i2 = Integer.parseInt(dd.get("BreathingValue").asString());
+                            i3 = Integer.parseInt(dd.get("HeartBeatValue").asString());
+                            avg1 += Integer.parseInt(dd.get("HeartBeatValue").asString());
+                            avg2 += Integer.parseInt(dd.get("BreathingValue").asString());
+                            ya[0].add(new Entry(cot, i1));
+                            ya[1].add(new Entry(cot, i2));
+                            ya[2].add(new Entry(cot, i3));
+                            cot++;
+                        }
+                    }} catch (Exception e) {
+                    e.printStackTrace();
+                }
+                finally {
+                    if(cot==0)
+                    {
+                        ya[0].add(new Entry(cot, 0));
+                        ya[1].add(new Entry(cot, 0));
+                        ya[2].add(new Entry(cot, 0));
+                    }
+                }
             }
+
+            x1.setValueFormatter(new IAxisValueFormatter() {
+                @Override
+                public String getFormattedValue(float value, AxisBase axis) {
+                    return timeList.get((int) value % timeList.size());
+                }
+            });
+
+
+            //t0.setText(BMS);
+            t0.setText(da/(1000*60*60*24)+"");
+            t1.setText(avg1+" ");
+            t2.setText(avg2+" ");
+
+            LineDataSet [] set=new LineDataSet[3];
+            String[] item={"BodyMotionState","BreathingValue","HeartBeatValue"};
+            int [] color={Color.BLUE,Color.BLACK,Color.RED};
+            ArrayList<ILineDataSet> dataset = new ArrayList<>();
+            for(int i=0;i<3;i++)
+            {
+                set[i]= new LineDataSet( ya[i],item[i]);
+                set[i].setDrawValues(false);
+                set[i].setDrawCircles(false);
+                set[i].setFillAlpha(10);
+                set[i].setColor(color[i]);
+                set[i].setCircleColor(Color.BLACK);
+                set[i].setHighLightColor(Color.YELLOW);
+                set[i].setLineWidth(1f);
+                set[i].setValueTextSize(12f);
+                set[i].setValueTextColor(Color.RED);
+                dataset.add(set[i]);
+            }
+            LineData data =new LineData(dataset);
+
             try {
                 waitDialog.dismiss();
+                m.setData(data);
             }
             catch (Exception e) {
                 //
