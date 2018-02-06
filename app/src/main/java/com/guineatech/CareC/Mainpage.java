@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -63,10 +64,12 @@ public class Mainpage extends AppCompatActivity {
     private String keystorePath;
     private String clientId=AppHelper.userid;
 
+    private Button b;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainpage);
+        b=(Button)findViewById(R.id.button3) ;
         btnAdd = (FloatingActionButton) findViewById(R.id.btnAdd);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         navigation_view = (NavigationView) findViewById(R.id.navigation_view);
@@ -78,6 +81,15 @@ public class Mainpage extends AppCompatActivity {
         keystorePath= getFilesDir().getPath();
         AppHelper.mqttcreate();
 
+        new DBloaddata().execute();
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent it=new Intent();
+                it.setClass(Mainpage.this,decive_data.class);
+                startActivity(it);
+            }
+        });
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,7 +108,7 @@ public class Mainpage extends AppCompatActivity {
         });
 
         // 用toolbar做為APP的ActionBar
-       setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);
 
         // 將drawerLayout和toolbar整合，會出現「三」按鈕
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -136,7 +148,6 @@ public class Mainpage extends AppCompatActivity {
                     Toast.makeText(Mainpage.this, "關於", Toast.LENGTH_SHORT).show();
                     return true;
                 }
-
                 return false;
             }
         });
