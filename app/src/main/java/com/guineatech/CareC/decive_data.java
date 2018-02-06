@@ -136,7 +136,7 @@ public class decive_data extends AppCompatActivity {
             ya[2] =new ArrayList<>();
             int rrr=0;
             if(howlong=="day") {
-                rrr=0;
+                rrr=5;
             }
             else if(howlong=="month") {
                 rrr=6;

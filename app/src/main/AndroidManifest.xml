@@ -40,7 +40,6 @@
         <activity android:name=".wifi"/>
         <activity android:name=".setDevice"/>
         <activity android:name=".decive_data"/>
-        <activity android:name=".ForgotPassword"/>
 
         </application>
 
