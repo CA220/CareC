@@ -28,10 +28,10 @@ public class Rerister extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rerister);
-        et_Mail=findViewById(R.id.et_Mail);
-        et_pwds=findViewById(R.id.et_pwds);
-        et_pwd=findViewById(R.id.et_pwd);
-        nexts=findViewById(R.id.nexts);
+        et_Mail= (EditText) findViewById(R.id.et_Mail);
+        et_pwds= (EditText) findViewById(R.id.et_pwds);
+        et_pwd= (EditText) findViewById(R.id.et_pwd);
+        nexts= (Button) findViewById(R.id.nexts);
         AppHelper.checkpool(getApplicationContext());
         nexts.setOnClickListener(new View.OnClickListener() {
             @Override
