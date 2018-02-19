@@ -25,7 +25,7 @@ import com.amazonaws.services.iot.AWSIotClient;
 import java.io.UnsupportedEncodingException;
 
 /**
- * Created by CAHans on 2017/12/28.
+ * Created by CAHans on 2017/12/28
  */
 
 public class AppHelper {
