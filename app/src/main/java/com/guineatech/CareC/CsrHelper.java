@@ -53,9 +53,9 @@ public class CsrHelper {
         AsymmetricKeyParameter privateKey = PrivateKeyFactory.createKey(keyPair.getPrivate()
                 .getEncoded());
         AlgorithmIdentifier signatureAlgorithm = new DefaultSignatureAlgorithmIdentifierFinder()
-                .find("SHA1WITHRSA");
+                .find("SHA256WITHRSA");
         AlgorithmIdentifier digestAlgorithm = new DefaultDigestAlgorithmIdentifierFinder()
-                .find("SHA-1");
+                .find("SHA-256");
         ContentSigner signer = new BcRSAContentSignerBuilder(signatureAlgorithm, digestAlgorithm)
                 .build(privateKey);
 

@@ -71,12 +71,12 @@ public class wifi extends AppCompatActivity {
     private Spinner spinnerWifis;
     private String bcode;
     private Button btstep;
-    private String wifissid="",wifipwd="",endpoint="a2hd4hpd193y9c.iot.us-west-2.amazonaws.com";
-    private String [] keycert=new String[2];
-    private String AWS_IOT_POLICY_NAME = "tre-Policy";
+    private String wifissid="",wifipwd="",endpoint=AppHelper.CUSTOMER_SPECIFIC_ENDPOINT;
+
+
     private AlertDialog userDialog;
     private ProgressDialog waitDialog;
-    private AWSIotMqttManager mqttManager;
+
     private EditText ed_pwd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,14 +91,7 @@ public class wifi extends AppCompatActivity {
             // TODO: Consider calling
             ActivityCompat.requestPermissions(wifi.this,new String[]{ACCESS_COARSE_LOCATION},1);
         }
-        spinnerWifis.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                wifissid=adapterView.getSelectedItem().toString();
-
-            }
-        });
 
 //Next step
         btstep.setOnClickListener(new View.OnClickListener() {
@@ -110,16 +103,22 @@ public class wifi extends AppCompatActivity {
                 int c=allwifi.getCount();
 
                 boolean checkf=false;
-                for(int v =0 ;v<c ;) {
-                    if(bcode==allwifi.getItem(v).toString()){
+                for(int v =0 ;v<c;) {
+                    Log.e("log"," "+bcode);
+                    Log.e("log"," "+allwifi.getItem(v).toString());
+                    if(bcode.equals(allwifi.getItem(v).toString())){
+                        int ope=0;
                        while (Connect(bcode,"12345678",WifiCipherType.WIFICIPHER_WPA))
                        {
+Log.e("log",ope+"");
+ope++;
                            try {
 // 为了避免程序一直while循环，让它睡个100毫秒在检测……..
                                Thread.currentThread();
                                Thread.sleep(100);
                            } catch (InterruptedException ie)
                            {
+                               Log.e("log","time out");
                                checkf=false;
                                break;
                            }
@@ -130,10 +129,10 @@ public class wifi extends AppCompatActivity {
                     v++;
                 }
                 if(checkf)
-                    showDialogMessage("Connect to Device","Success to Connect Device",2);
+                    new  conndecives().execute();
                 else
-                    showDialogMessage("Connect to Device","Can't no find Device\nPlease Check your Device switch to Seting Mode",0);
 
+                Log.e("log","Can't no find Device\nPlease Check your Device switch to Seting Mode");
             }
         });
         openGPS(context);
@@ -148,9 +147,6 @@ public class wifi extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                switch (Whatis)
                {
-                   case 0:
-                   case 1:new CreateCertificateTask().execute();
-                   case 2:new conndecives().execute();
                    case 3:
                        Intent it=new Intent();
                        it.setClass(wifi.this,setDevice.class);
@@ -402,7 +398,7 @@ public class wifi extends AppCompatActivity {
                     wr.writeBytes(lineEnd);
                     BufferedReader reader = null;
                     try {
-                        reader = new BufferedReader(new StringReader(keycert[0]));
+                        reader = new BufferedReader(in[j]);
 
 
                         // do reading, usually loop until end of file reading
@@ -502,7 +498,7 @@ public class wifi extends AppCompatActivity {
                 Log.e("log_tag", e.toString());
                 if(e.toString().equals("java.io.IOException: unexpected end of stream on Connection{192.168.1.1:80, proxy=DIRECT hostAddress=192.168.1.1 cipherSuite=none protocol=http/1.1} (recycle count=0)"))
                     return "Sucess!!";
-
+                else return "Fail "+e.toString();
 
             }
             finally {
@@ -524,96 +520,23 @@ public class wifi extends AppCompatActivity {
             }
             if(aVoid.equals("Sucess!!"))
             {
-                showDialogMessage("Device connent",aVoid,3);
+               showDialogMessage("Connect Over","Switch Device On N",3);
             }
             else if(aVoid.equals("Fail"))
             {
-                showDialogMessage("Device connent",aVoid,0);
+                Log.e("log",aVoid);
             }
+            else
+                {
+                    Log.e("log",aVoid);
+                }
 
         }
     }
 
 
     //建立金鑰
-    private class CreateCertificateTask extends AsyncTask<Void, Void, String> {
 
-        CreateCertificateTask()
-        {
-            try {
-                waitDialog.dismiss();
-            }catch (Exception e)
-            {
-                e.toString();
-            }
-            waitDialog = new ProgressDialog(wifi.this);
-            waitDialog.setTitle("Load......");
-            waitDialog.show();
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            try {
-                //Looper.prepare();
-                // first generate a Keypair with Private and Public keys
-                KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
-                kpg.initialize(2048);
-                KeyPair keyPair = kpg.generateKeyPair();
-
-
-                PrivateKey priv = keyPair.getPrivate();
-                byte[] privBytes = priv.getEncoded();
-
-                PrivateKeyInfo pkInfo = PrivateKeyInfo.getInstance(privBytes);
-                ASN1Encodable encodable = pkInfo.parsePrivateKey();
-                ASN1Primitive primitive = encodable.toASN1Primitive();
-
-                keycert[0]= Base64.encodeToString(primitive.getEncoded(),0);
-                // then create the CSR (uses SpongyCastle (BouncyCastle))
-                String csrPemString = CsrHelper.generateCsrPemString(keyPair);
-
-                // now create the create certificate request using that CSR
-                CreateCertificateFromCsrRequest request = new CreateCertificateFromCsrRequest();
-                request.setSetAsActive(true);
-                request.setCertificateSigningRequest(csrPemString);
-
-                // submit the request
-                CreateCertificateFromCsrResult result = AppHelper.iotClient.createCertificateFromCsr(request);
-
-                keycert[0]= Base64.encodeToString(keyPair.getPrivate().getEncoded(),Base64.DEFAULT);
-                keycert[1]=result.getCertificatePem().toString();
-                keycert[0]="-----BEGIN RSA PRIVATE KEY----- \n"+keycert[0]+"-----END RSA PRIVATE KEY-----\n";
-
-                AttachPrincipalPolicyRequest policyAttachRequest = new AttachPrincipalPolicyRequest();
-                policyAttachRequest.setPolicyName(AWS_IOT_POLICY_NAME);
-                policyAttachRequest.setPrincipal(result.getCertificateArn());
-                AppHelper.iotClient.attachPrincipalPolicy(policyAttachRequest);
-
-                return "Success";
-            } catch (Exception e) {
-
-
-
-                return "An error occurred while creating the CSR and calling create certificate API ";
-            }
-
-        }
-
-
-        protected void onPostExecute(String result) {
-            try {
-                waitDialog.dismiss();
-            }catch (Exception e)
-            {
-                e.toString();
-            }
-
-            if(result.equals("Success"))
-                showDialogMessage("Get key",result,0);
-            else
-                showDialogMessage("Get key","Fail\nPlease check Internet\n"+result,1);
-        }
-    }
 
 
 
