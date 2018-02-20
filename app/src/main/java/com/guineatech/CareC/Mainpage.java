@@ -50,8 +50,10 @@ public class Mainpage extends AppCompatActivity {
         navigation_view = (NavigationView) findViewById(R.id.navigation_view);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         mRecyclerView=findViewById(R.id.recycler_view);
+
         dbClient = new AmazonDynamoDBClient(AppHelper.credentialsProvider);
         dbClient.setRegion(Region.getRegion(Regions.US_WEST_2));
+
         new DBloaddata().execute();
         b.setOnClickListener(new View.OnClickListener() {
             @Override
