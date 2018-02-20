@@ -1,21 +1,49 @@
 package com.guineatech.CareC;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 import android.view.View;
 
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Sign_Rerister extends AppCompatActivity {
     TextView text_Sign;
     Button bt_Ris;
     String email,pwd;
+
+    String valuestring = null;
+    public SharedPreferences setting;
+    public static File file;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppHelper.checkpool(this);
         setContentView(R.layout.activity_sign__rerister);
 
+        File file = new File("/data/data/com.guineatech.CareC/shared_prefs","CognitoIdentityProviderCache.xml");
+        if(file.exists()){
+            ReadValue();
+            if(!valuestring.equals("")){
+                if(AppHelper.userid==null)
+                {
+                    AppHelper.userid= setting.getString("CognitoIdentityProvider.6nn164bo79srih9c48t0pkj6ql.LastAuthUser","");
+                }
+                SendIntent();
+            }
+        }
         text_Sign=(TextView)findViewById(R.id.textBt_Sign);
         bt_Ris=(Button)findViewById(R.id.bt_Ris);
         //註冊
@@ -67,5 +95,14 @@ public class Sign_Rerister extends AppCompatActivity {
 
         }
     }
-
+        public void ReadValue(){
+        setting = getSharedPreferences("CognitoIdentityProviderCache",0);
+        valuestring = setting.getString("CognitoIdentityProvider.6nn164bo79srih9c48t0pkj6ql.LastAuthUser","");
+    }
+    public void SendIntent(){
+        Intent it = new Intent();
+        it.setClass(Sign_Rerister.this,Mainpage.class);
+        startActivity(it);
+        finish();
+    }
 }
