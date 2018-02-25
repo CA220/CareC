@@ -3,6 +3,7 @@ package com.guineatech.CareC;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,7 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Login extends AppCompatActivity {
-    TextView text_mail,text_pwd,text_forgot;
+    TextView text_forgot;
     EditText ed_mail,ed_pwd;
     Button  bt_ok;
     String email,pwd;
@@ -41,9 +42,7 @@ public class Login extends AppCompatActivity {
         final GridLayout LO = (GridLayout) findViewById( R.id.layout1 );
         LO.setColumnCount(3);
         LO.setRowCount(2);
-//
-       // text_mail=(TextView)findViewById(R.id.text_Mail);
-       // text_pwd=(TextView)findViewById(R.id.text_pwd);
+
         text_forgot=(TextView)findViewById(R.id.text_Forgot);
         bt_ok=(Button)findViewById(R.id.bt_Ok);
         ed_mail=(EditText)findViewById(R.id.et_Mail);
@@ -76,6 +75,11 @@ public class Login extends AppCompatActivity {
             Map<String, String> logins = new HashMap<String, String>();
             logins.put("cognito-idp.us-west-2.amazonaws.com/us-west-2_Aj3frUrZo",idToken);
             AppHelper.credentialsProvider.setLogins(logins);
+            SharedPreferences setting=getSharedPreferences("Data",0);
+            setting.edit()
+                    .putString("account",AppHelper.userid)
+                    .putString("passwrod",ed_pwd.getText().toString())
+                    .commit();
             showDialogMessage("Login","Success",true);
 
 

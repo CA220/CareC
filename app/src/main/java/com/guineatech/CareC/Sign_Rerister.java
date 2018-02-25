@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationDetails;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler;
@@ -39,7 +41,9 @@ public class Sign_Rerister extends AppCompatActivity {
             if(!valuestring.equals("")){
                 if(AppHelper.userid==null)
                 {
-                    AppHelper.userid= setting.getString("CognitoIdentityProvider.6nn164bo79srih9c48t0pkj6ql.LastAuthUser","");
+                    AppHelper.userid=setting.getString("account","");
+                    AppHelper.getPool().getUser(AppHelper.userid).getSessionInBackground(authenticationHandler);
+                    pwd=setting.getString("password","");
                 }
                 SendIntent();
             }
@@ -96,8 +100,8 @@ public class Sign_Rerister extends AppCompatActivity {
         }
     }
         public void ReadValue(){
-        setting = getSharedPreferences("CognitoIdentityProviderCache",0);
-        valuestring = setting.getString("CognitoIdentityProvider.6nn164bo79srih9c48t0pkj6ql.LastAuthUser","");
+        setting = getSharedPreferences("Data",0);
+        valuestring = setting.getString("account","");
     }
     public void SendIntent(){
         Intent it = new Intent();
@@ -105,4 +109,45 @@ public class Sign_Rerister extends AppCompatActivity {
         startActivity(it);
         finish();
     }
+
+    AuthenticationHandler authenticationHandler = new AuthenticationHandler() {
+        @Override
+        public void onSuccess(CognitoUserSession cognitoUserSession, CognitoDevice device) {
+
+            String idToken= cognitoUserSession.getIdToken().getJWTToken();
+            Map<String, String> logins = new HashMap<String, String>();
+            logins.put("cognito-idp.us-west-2.amazonaws.com/us-west-2_Aj3frUrZo",idToken);
+            AppHelper.credentialsProvider.setLogins(logins);
+        }
+        //
+        @Override
+        public void getAuthenticationDetails(AuthenticationContinuation authenticationContinuation, String username) {
+            //Toast.makeText(getApplicationContext(),"2",Toast.LENGTH_LONG).show();
+            getUserAuthentication(authenticationContinuation, username);
+        }
+
+        @Override
+        public void getMFACode(MultiFactorAuthenticationContinuation multiFactorAuthenticationContinuation) {
+
+        }
+
+        @Override
+        public void onFailure(Exception e) {
+
+        }
+
+        @Override
+        public void authenticationChallenge(ChallengeContinuation continuation) {
+
+
+        }
+    };
+
+    private void getUserAuthentication(AuthenticationContinuation continuation, String username)
+    {
+        AuthenticationDetails authenticationDetails = new AuthenticationDetails(username, pwd, null);
+        continuation.setAuthenticationDetails(authenticationDetails);
+        continuation.continueTask();
+    }
+
 }

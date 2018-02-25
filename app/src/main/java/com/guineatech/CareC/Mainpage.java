@@ -171,7 +171,7 @@ public class Mainpage extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<Document> documents) {
             super.onPostExecute(documents);
-            mqttconnect();
+            //mqttconnect();
 
             if(documents!=null)
             {
