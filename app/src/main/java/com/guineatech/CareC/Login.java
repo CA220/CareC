@@ -19,8 +19,10 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationDetails;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ForgotPasswordContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.ForgotPasswordHandler;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.iot.AWSIotClient;
@@ -35,6 +37,7 @@ public class Login extends AppCompatActivity {
     String email,pwd;
     private AlertDialog userDialog;
     private ProgressDialog waitDialog;
+    private ForgotPasswordContinuation forgotPasswordContinuation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +69,82 @@ public class Login extends AppCompatActivity {
 
             }
         });
+
+        text_forgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
     }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode)
+        {
+            case 3:
+                // Forgot password
+                if(resultCode == RESULT_OK) {
+                    String newPass = data.getStringExtra("newPass");
+                    String code = data.getStringExtra("code");
+                    if (newPass != null && code != null) {
+                        if (!newPass.isEmpty() && !code.isEmpty()) {
+                            showWaitDialog("Setting new password...");
+                            forgotPasswordContinuation.setPassword(newPass);
+                            forgotPasswordContinuation.setVerificationCode(code);
+                            forgotPasswordContinuation.continueTask();
+                        }
+                    }
+                }
+                break;
+        }
+    }
+
+    private void forgotpasswordUser() {
+       String username = ed_mail.getText().toString();
+        if(username == null) {
+
+            return;
+        }
+
+        if(username.length() < 1) {
+
+            return;
+        }
+
+        showWaitDialog("");
+        AppHelper.getPool().getUser(username).forgotPasswordInBackground(forgotPasswordHandler);
+    }
+
+    ForgotPasswordHandler forgotPasswordHandler = new ForgotPasswordHandler() {
+        @Override
+        public void onSuccess() {
+            showDialogMessage("Password Changed","Success",false);
+
+        }
+
+        @Override
+        public void getResetCode(ForgotPasswordContinuation forgotPasswordContinuation) {
+
+            getForgotPasswordCode(forgotPasswordContinuation);
+        }
+
+        @Override
+        public void onFailure(Exception e)
+        {
+            showDialogMessage("Fail Change Password",e.toString(),false);
+        }
+    };
+
+    private void getForgotPasswordCode(ForgotPasswordContinuation forgotPasswordContinuation) {
+//        this.forgotPasswordContinuation = forgotPasswordContinuation;
+        Intent intent = new Intent(this, ForgotPassword.class);
+
+        startActivityForResult(intent, 3);
+    }
+
     AuthenticationHandler authenticationHandler = new AuthenticationHandler() {
         @Override
         public void onSuccess(CognitoUserSession cognitoUserSession, CognitoDevice device) {
@@ -87,14 +165,13 @@ public class Login extends AppCompatActivity {
 //
         @Override
         public void getAuthenticationDetails(AuthenticationContinuation authenticationContinuation, String username) {
-            //Toast.makeText(getApplicationContext(),"2",Toast.LENGTH_LONG).show();
+
             getUserAuthentication(authenticationContinuation, username);
         }
 
         @Override
         public void getMFACode(MultiFactorAuthenticationContinuation multiFactorAuthenticationContinuation) {
-            closeWaitDialog();
-           Toast.makeText(getApplicationContext(),"3",Toast.LENGTH_LONG).show();
+
         }
 
         @Override
@@ -105,16 +182,7 @@ public class Login extends AppCompatActivity {
 
         @Override
         public void authenticationChallenge(ChallengeContinuation continuation) {
-            /**
-             * For Custom authentication challenge, implement your logic to present challenge to the
-             * user and pass the user's responses to the continuation.
-             */
-            if ("NEW_PASSWORD_REQUIRED".equals(continuation.getChallengeName())) {
-                // This is the first sign-in attempt for an admin created user
 
-            } else if ("SELECT_MFA_TYPE".equals(continuation.getChallengeName())) {
-
-            }
         }
     };
 

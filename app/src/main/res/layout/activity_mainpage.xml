@@ -5,7 +5,8 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.guineatech.CareC.Mainpage">
+    tools:context="com.guineatech.CareC.Mainpage"
+    android:background="@drawable/background">
 
     <RelativeLayout
         android:layout_width="match_parent"

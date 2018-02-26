@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.guineatech.CareC.Sign_Rerister">
+    tools:context="com.guineatech.CareC.Sign_Rerister"
+    android:background="@drawable/background">
 
     <TextView
         android:id="@+id/textBt_Sign"
