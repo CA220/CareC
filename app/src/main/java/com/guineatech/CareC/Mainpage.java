@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,10 +15,12 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -51,30 +54,28 @@ import java.util.List;
 
 public class Mainpage extends AppCompatActivity {
     private FloatingActionButton btnAdd;
-    private DrawerLayout drawerLayout;
-    private NavigationView navigation_view;
-    private Toolbar toolbar;
+
     private AmazonDynamoDBClient dbClient;
     private Table dbTable;
     private String DYNAMODB_TABLE="tusre";
-    private ListView mRecyclerView;
+   // private ListView mRecyclerView;
     private ProgressDialog waitDialog;
     public String [] keycert=new String[2];
     private String AWS_IOT_POLICY_NAME = "tre-Policy";
     private String keystorePath;
     private String clientId=AppHelper.userid;
 
-    private Button b;
+    private ImageView b;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainpage);
-        b=(Button)findViewById(R.id.button3) ;
-        btnAdd = (FloatingActionButton) findViewById(R.id.btnAdd);
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        navigation_view = (NavigationView) findViewById(R.id.navigation_view);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        mRecyclerView=findViewById(R.id.recycler_view);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+          b=(ImageView) findViewById(R.id.image_dot) ;
+          btnAdd = (FloatingActionButton) findViewById(R.id.btnAdd);
+
+        //mRecyclerView=findViewById(R.id.recycler_view);
 
         dbClient = new AmazonDynamoDBClient(AppHelper.credentialsProvider);
         dbClient.setRegion(Region.getRegion(Regions.US_WEST_2));
@@ -109,54 +110,102 @@ public class Mainpage extends AppCompatActivity {
             }
         });
 
-        // 用toolbar做為APP的ActionBar
-        setSupportActionBar(toolbar);
-
-        // 將drawerLayout和toolbar整合，會出現「三」按鈕
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-
-        // 選單點擊事件
-        navigation_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                // 點選時收起選單
-                drawerLayout.closeDrawer(GravityCompat.START);
-
-                // 取得選項id
-                int id = item.getItemId();
-
-                // 依照id判斷點了哪個項目並做相應事件
-                if (id == R.id.action_home) {
-                    // 按下「首頁」要做的事
-                    Toast.makeText(Mainpage.this, "首頁", Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-                else if (id == R.id.action_help) {
-                    // 按下「使用說明」要做的事
-                    Toast.makeText(Mainpage.this, "使用說明", Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-                else if (id == R.id.action_settings) {
-                    // 按下「設定」要做的事
-                    Toast.makeText(Mainpage.this, "設定", Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-                else if (id == R.id.action_about) {
-                    // 按下「關於」要做的事
-                    Toast.makeText(Mainpage.this, "關於", Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-                return false;
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         });
-        Log.e("log","i");
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        findViewById(R.id.btn1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(Mainpage.this, "SETTINGS still in development", Toast.LENGTH_SHORT).show();
+                onBackPressed();
+            }
+        });
+        findViewById(R.id.btn2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(Mainpage.this, "TERMS still in development", Toast.LENGTH_SHORT).show();
+                onBackPressed();
+            }
+        });
+
+        findViewById(R.id.btn3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(Mainpage.this, "HELP and FEEDBACK still in development", Toast.LENGTH_SHORT).show();
+                onBackPressed();
+            }
+        });
+
+        findViewById(R.id.btn4).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(Mainpage.this, "LOG OUT still in development", Toast.LENGTH_SHORT).show();
+                onBackPressed();
+            }
+        });
+
+        findViewById(R.id.user_ph).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(Mainpage.this, "USER PH SET still in development", Toast.LENGTH_SHORT).show();
+                onBackPressed();
+
+            }
+        });
+        findViewById(R.id.name).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(Mainpage.this, "USER name still in development", Toast.LENGTH_SHORT).show();
+                onBackPressed();
+
+            }
+        });
+
         new CreateCertificateTask().execute();
 
 
+    }@Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private  class DBloaddata extends AsyncTask<Void,Void,List<Document>>
@@ -175,9 +224,9 @@ public class Mainpage extends AppCompatActivity {
 
             if(documents!=null)
             {
-                ArrayAdapter<Document> ld = new ArrayAdapter<Document>(Mainpage.this, R.layout.listlayout,R.id.text, documents);
+                /*ArrayAdapter<Document> ld = new ArrayAdapter<Document>(Mainpage.this, R.layout.listlayout,R.id.text, documents);
 
-                mRecyclerView.setAdapter(ld);
+                mRecyclerView.setAdapter(ld);*/
             }
             try {
                 waitDialog.dismiss();
@@ -364,6 +413,8 @@ new CreateCertificateTask().execute();
                     }
                 });
     }
+
+
 
 
 }

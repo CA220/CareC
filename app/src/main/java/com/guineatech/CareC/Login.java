@@ -64,6 +64,7 @@ public class Login extends AppCompatActivity {
                 {
                     AppHelper.userid= ed_mail.getText().toString().replace("@","-at-");
                 }
+                //要球憑證
                 AppHelper.getPool().getUser(AppHelper.userid).getSessionInBackground(authenticationHandler);
                 showWaitDialog("Login......");
 
@@ -73,7 +74,7 @@ public class Login extends AppCompatActivity {
         text_forgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                forgotpasswordUser();
             }
         });
 
