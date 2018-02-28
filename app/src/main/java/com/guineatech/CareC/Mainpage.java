@@ -70,8 +70,7 @@ public class Mainpage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainpage);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
           b=(ImageView) findViewById(R.id.image_dot) ;
           btnAdd = (FloatingActionButton) findViewById(R.id.btnAdd);
 
@@ -84,7 +83,7 @@ public class Mainpage extends AppCompatActivity {
         keystorePath= getFilesDir().getPath();
         AppHelper.mqttcreate();
 
-        new DBloaddata().execute();
+        //new DBloaddata().execute();
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -110,20 +109,15 @@ public class Mainpage extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+              this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
-        toggle.syncState();
+       toggle.syncState();
 
         findViewById(R.id.btn1).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,27 +180,9 @@ public class Mainpage extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
-        return super.onOptionsItemSelected(item);
-    }
 
     private  class DBloaddata extends AsyncTask<Void,Void,List<Document>>
     {
@@ -277,8 +253,8 @@ private String keyandcert()
     keycert[1]=result.getCertificatePem().toString();
     keycert[0]="-----BEGIN RSA PRIVATE KEY----- \n"+keycert[0]+"-----END RSA PRIVATE KEY-----\n";
 
-    Log.e("log",keycert[0]);
-    Log.e("log",keycert[1]);
+  //  Log.e("log",keycert[0]);
+   // Log.e("log",keycert[1]);
  AWSIotKeystoreHelper.saveCertificateAndPrivateKey(AppHelper.userid,
                 result.getCertificatePem(), keyPair.getPrivate(), keystorePath,
                 AppHelper.userid, AppHelper.userid);
@@ -334,7 +310,7 @@ private String keyandcert()
 
             if(result=="key")
             {
-               new DBloaddata().execute();
+           //    new DBloaddata().execute();
             }
             else
             {try {
