@@ -52,7 +52,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:background="@android:color/transparent"
-                    android:text="@string/Settings" />
+                    android:text="@string/My_profile" />
 
                 <Button
                     android:id="@+id/btn2"
