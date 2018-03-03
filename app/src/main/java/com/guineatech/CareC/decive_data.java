@@ -11,12 +11,15 @@ import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amazonaws.mobileconnectors.dynamodbv2.document.Table;
 import com.amazonaws.mobileconnectors.dynamodbv2.document.datatype.Document;
@@ -47,7 +50,6 @@ import java.util.List;
  */
 
 public class decive_data extends AppCompatActivity {
-    private Toolbar toolbar;
     private AmazonDynamoDBClient dbClient;
     private Table dbTable;
     private String DYNAMODB_TABLE="SSTP";
@@ -62,6 +64,9 @@ public class decive_data extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.decive_data);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         dbClient = new AmazonDynamoDBClient(AppHelper.credentialsProvider);
         dbClient.setRegion(Region.getRegion(Regions.US_WEST_2));
@@ -105,7 +110,37 @@ public class decive_data extends AppCompatActivity {
             }
         });
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // 設置要用哪個menu檔做為選單
+        getMenuInflater().inflate(R.menu.activity_main_drawer, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        // 取得點選項目的id
+        int id = item.getItemId();
+
+        // 依照id判斷點了哪個項目並做相應事件
+        if (id == R.id.nav_devicename) {
+            Toast.makeText(this, "devicename", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        else if (id == R.id.nav_delete) {
+            Toast.makeText(this, "delete", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        else if (id == R.id.nav_notification) {
+            Intent it =new Intent();
+            it.setClass(decive_data.this,notifications.class);
+            startActivity(it);
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
     private  class DBloaddata extends AsyncTask<String,Void,List<Document>>
     {

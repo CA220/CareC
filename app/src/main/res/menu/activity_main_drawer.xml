@@ -1,27 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn="navigation_view">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:src="@drawable/nav_dot"
-            android:title="Settings" />
+            android:id="@+id/nav_devicename"
+            android:title="Device name" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Terms privacy policy" />
+            android:id="@+id/nav_delete"
+            android:title="Delete" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Help feedback" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Sign out" />
-    </group>
-
-
+            android:id="@+id/nav_notification"
+            android:title="Notification" />
 
 </menu>

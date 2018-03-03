@@ -24,11 +24,12 @@ public class Confirmd  extends AppCompatActivity {
     EditText code;
     private AlertDialog userDialog;
     private ProgressDialog waitDialog;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_corfin);
-        con=findViewById(R.id.bt_con);
-        code=findViewById(R.id.et_code);
+        con = findViewById(R.id.bt_con);
+        code = findViewById(R.id.et_code);
 
         con.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,15 +45,16 @@ public class Confirmd  extends AppCompatActivity {
         @Override
         public void onSuccess() {
             waitDialog.dismiss();
-            showDialogMessage("Confirmation code sent.","Success.", true);
+            showDialogMessage("Confirmation code sent.", "Success.", true);
         }
 
         @Override
         public void onFailure(Exception exception) {
             waitDialog.dismiss();
-            showDialogMessage("Confirmation code request has failed","Failed "+exception, false);
+            showDialogMessage("Confirmation code request has failed", "Failed " + exception, false);
         }
     };
+
     private void showWaitDialog(String message) {
         closeWaitDialog();
         waitDialog = new ProgressDialog(this);
@@ -63,8 +65,7 @@ public class Confirmd  extends AppCompatActivity {
     private void closeWaitDialog() {
         try {
             waitDialog.dismiss();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             //
         }
     }
@@ -77,7 +78,7 @@ public class Confirmd  extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 try {
                     userDialog.dismiss();
-                    if(exitActivity) {
+                    if (exitActivity) {
                         exit();
                     }
                 } catch (Exception e) {
@@ -90,8 +91,9 @@ public class Confirmd  extends AppCompatActivity {
     }
 
     private void exit() {
-
-        finish();
+        Intent it = new Intent();
+        it.setClass(Confirmd.this, success.class);
+        startActivity(it);
         finish();
     }
 }
