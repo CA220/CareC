@@ -40,7 +40,13 @@
         <activity android:name=".wifi"/>
         <activity android:name=".setDevice"/>
         <activity android:name=".decive_data"/>
-
+        <activity android:name=".ForgotPassword"/>
+        <activity android:name=".success"/>
+        <activity android:name=".my_profile"/>
+        <activity android:name=".username"/>
+        <activity android:name=".birthday"/>
+        <activity android:name=".district"/>
+        <activity android:name=".notifications"/>
         </application>
 
     </manifest>

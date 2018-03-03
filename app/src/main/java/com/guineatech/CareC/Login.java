@@ -42,9 +42,6 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        final GridLayout LO = (GridLayout) findViewById( R.id.layout1 );
-        LO.setColumnCount(3);
-        LO.setRowCount(2);
 
         text_forgot=(TextView)findViewById(R.id.text_Forgot);
         bt_ok=(Button)findViewById(R.id.bt_Ok);

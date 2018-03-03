@@ -44,7 +44,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="Settings" style="text-align:left">\u25C6 Settings </string>
+    <string name="My_profile" style="text-align:left">\u25C6 My Profile</string>
     <string name="Terms_privacy_policy">\u25C6 Terms \u0026  privacy policy</string>
     <string name="Help_feedback">\u25C6 Help \u0026  feedback</string>
     <string name="Sign_out">\u25C6 Sign out</string>

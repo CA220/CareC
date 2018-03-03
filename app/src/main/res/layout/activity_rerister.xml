@@ -7,88 +7,147 @@
     tools:context="com.guineatech.CareC.Rerister"
     android:background="@drawable/background">
 
-    <Button
-        android:id="@+id/nexts"
-        android:layout_width="134dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="124dp"
-        android:layout_marginTop="24dp"
-        android:text="Next step"
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.024"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_pwd" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/key" />
 
     <TextView
-        android:id="@+id/text_pwd"
-        android:layout_width="368dp"
-        android:layout_height="41dp"
-        android:layout_column="0"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="36dp"
-        android:layout_row="1"
-        android:text="Creat password"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_Mail" />
-
-    <TextView
-        android:id="@+id/text_pwds"
-        android:layout_width="368dp"
-        android:layout_height="38dp"
-        android:layout_column="0"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_row="1"
-        android:text="Confirm password"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_pwds" />
-
-    <EditText
-        android:id="@+id/et_pwd"
-        android:layout_width="368dp"
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_column="1"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="28dp"
-        android:layout_row="1"
-        android:ems="10"
-        android:inputType="textPassword"
+        android:layout_marginTop="16dp"
+        android:text="SIGN UP"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_pwds" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/et_pwds"
-        android:layout_width="368dp"
-        android:layout_height="wrap_content"
-        android:layout_column="1"
-        android:layout_marginStart="8dp"
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="110dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView9"
+        app:srcCompat="@drawable/dot" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="40dp"
-        android:layout_row="1"
-        android:ems="10"
-        android:inputType="textPassword"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_pwd" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView6"
+        app:srcCompat="@drawable/dot" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView7"
+        app:srcCompat="@drawable/dot" />
 
     <EditText
         android:id="@+id/et_Mail"
-        android:layout_width="368dp"
+        android:layout_width="300dp"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="145dp"
         android:ems="10"
+        android:hint="EMAIL"
         android:inputType="textEmailSubject"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView6"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/text_Mail"
+    <EditText
+        android:id="@+id/et_pwds"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_column="1"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_row="1"
+        android:ems="10"
+        android:hint="PASSWORD"
+        android:inputType="textPassword"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView7"
+        app:layout_constraintTop_toBottomOf="@+id/et_Mail" />
+
+    <EditText
+        android:id="@+id/et_pwd"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_column="1"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_row="1"
+        android:ems="10"
+        android:hint="CONFORM PASSWORD"
+        android:inputType="textPassword"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView8"
+        app:layout_constraintTop_toBottomOf="@+id/et_pwds" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Your mail address"
-        android:textSize="24sp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:text="I agree all Terms of Service"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.087"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/et_pwd" />
+
+    <Button
+        android:id="@+id/nexts"
+        android:layout_width="300dp"
+        android:layout_height="65dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/nextstep"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView10" />
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="64dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox"
+        app:srcCompat="@drawable/step1" />
 
 </android.support.constraint.ConstraintLayout>
