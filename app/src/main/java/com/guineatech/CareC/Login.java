@@ -102,7 +102,7 @@ public class Login extends AppCompatActivity {
 
     private void forgotpasswordUser() {
        String username = ed_mail.getText().toString();
-        if(username == null) {
+        if(username.equals("")) {
 
             return;
         }
@@ -156,7 +156,7 @@ public class Login extends AppCompatActivity {
                     .putString("account",AppHelper.userid)
                     .putString("passwrod",ed_pwd.getText().toString())
                     .commit();
-            showDialogMessage("Login","Success",true);
+            exhere();
 
 
         }
@@ -234,6 +234,7 @@ public class Login extends AppCompatActivity {
         Intent it =new Intent();
         it.setClass(Login.this,Mainpage.class);
         startActivity(it);
+
         finish();
     }
 }

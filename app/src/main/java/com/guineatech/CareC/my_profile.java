@@ -27,7 +27,7 @@ public class my_profile extends AppCompatActivity {
                 Intent it =new Intent();
                 it.setClass(my_profile.this,username.class);
                 startActivity(it);
-                finish();
+
             }
         });
         L2.setOnClickListener(new View.OnClickListener() {
@@ -35,7 +35,7 @@ public class my_profile extends AppCompatActivity {
                 Intent it =new Intent();
                 it.setClass(my_profile.this,username.class);
                 startActivity(it);
-                finish();
+
             }
         });
         L3.setOnClickListener(new View.OnClickListener() {
@@ -43,7 +43,7 @@ public class my_profile extends AppCompatActivity {
                 Intent it =new Intent();
                 it.setClass(my_profile.this,birthday.class);
                 startActivity(it);
-                finish();
+               
             }
         });
         L4.setOnClickListener(new View.OnClickListener() {
@@ -51,7 +51,7 @@ public class my_profile extends AppCompatActivity {
                 Intent it =new Intent();
                 it.setClass(my_profile.this,district.class);
                 startActivity(it);
-                finish();
+
             }
         });
         L5.setOnClickListener(new View.OnClickListener() {
@@ -59,7 +59,7 @@ public class my_profile extends AppCompatActivity {
                 Intent it =new Intent();
                 it.setClass(my_profile.this,ForgotPassword.class);
                 startActivity(it);
-                finish();
+
             }
         });
     }

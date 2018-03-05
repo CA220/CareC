@@ -125,7 +125,7 @@ public class Mainpage extends AppCompatActivity {
                 Intent it =new Intent();
                 it.setClass(Mainpage.this,my_profile.class);
                 startActivity(it);
-                finish();
+
             }
         });
         findViewById(R.id.btn2).setOnClickListener(new View.OnClickListener() {
@@ -150,11 +150,12 @@ public class Mainpage extends AppCompatActivity {
                 Toast.makeText(Mainpage.this, "LOG OUT still in development", Toast.LENGTH_SHORT).show();
                 File file = new File("/data/data/com.guineatech.CareC/shared_prefs","Data.xml");
                 file.delete();
+                AppHelper.userid=null;
                 onBackPressed();
                 Intent it=new Intent();
                 it.setClass(Mainpage.this,Sign_Rerister.class);
                 startActivity(it);
-
+                finish();
             }
         });
 
@@ -222,9 +223,9 @@ public class Mainpage extends AppCompatActivity {
     private class CreateCertificateTask extends AsyncTask<Void, Void, String> {
 CreateCertificateTask()
 {
-    waitDialog = new ProgressDialog(Mainpage.this);
-    waitDialog.setTitle("Load......");
-    waitDialog.show();
+   // waitDialog = new ProgressDialog(Mainpage.this);
+   // waitDialog.setTitle("Load......");
+    //waitDialog.show();
 }
 
 private String keyandcert()
