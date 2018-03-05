@@ -148,7 +148,13 @@ public class Mainpage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(Mainpage.this, "LOG OUT still in development", Toast.LENGTH_SHORT).show();
+                File file = new File("/data/data/com.guineatech.CareC/shared_prefs","Data.xml");
+                file.delete();
                 onBackPressed();
+                Intent it=new Intent();
+                it.setClass(Mainpage.this,Sign_Rerister.class);
+                startActivity(it);
+
             }
         });
 
