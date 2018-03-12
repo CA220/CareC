@@ -57,10 +57,9 @@ public class Login extends AppCompatActivity {
         bt_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(AppHelper.userid==null)
-                {
+
                     AppHelper.userid= ed_mail.getText().toString().replace("@","-at-");
-                }
+
                 //要球憑證
                 AppHelper.getPool().getUser(AppHelper.userid).getSessionInBackground(authenticationHandler);
                 showWaitDialog("Login......");

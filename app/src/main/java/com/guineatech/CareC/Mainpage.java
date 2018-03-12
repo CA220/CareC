@@ -3,6 +3,7 @@ package com.guineatech.CareC;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -28,9 +29,6 @@ import com.amazonaws.mobileconnectors.dynamodbv2.document.Table;
 import com.amazonaws.mobileconnectors.dynamodbv2.document.datatype.Document;
 import com.amazonaws.mobileconnectors.dynamodbv2.document.datatype.Primitive;
 import com.amazonaws.mobileconnectors.iot.AWSIotKeystoreHelper;
-import com.amazonaws.mobileconnectors.iot.AWSIotMqttClientStatusCallback;
-import com.amazonaws.mobileconnectors.iot.AWSIotMqttNewMessageCallback;
-import com.amazonaws.mobileconnectors.iot.AWSIotMqttQos;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
@@ -45,10 +43,8 @@ import org.spongycastle.asn1.pkcs.PrivateKeyInfo;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.UnsupportedEncodingException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
-import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.util.List;
 
@@ -64,10 +60,15 @@ public class Mainpage extends AppCompatActivity {
     private String AWS_IOT_POLICY_NAME = "tre-Policy";
     private String keystorePath;
     private String clientId=AppHelper.userid;
-
+    public static String serial;
     private ImageView b;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+            serial = Build.SERIAL;
+        }else {
+            serial=null;
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainpage);
 
@@ -97,7 +98,7 @@ public class Mainpage extends AppCompatActivity {
             public void onClick(View view) {
                 // 點Button時要做的事寫在這裡..
                 try {
-                    AppHelper.mqttManager.disconnect();
+
                 }catch (Exception v)
                 {
 
@@ -147,6 +148,8 @@ public class Mainpage extends AppCompatActivity {
         findViewById(R.id.btn4).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                AppHelper.mqttManager.disconnect();
                 Toast.makeText(Mainpage.this, "LOG OUT still in development", Toast.LENGTH_SHORT).show();
                 File file = new File("/data/data/com.guineatech.CareC/shared_prefs","Data.xml");
                 file.delete();
@@ -202,7 +205,7 @@ public class Mainpage extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<Document> documents) {
             super.onPostExecute(documents);
-            //mqttconnect();
+
 
             if(documents!=null)
             {
@@ -258,12 +261,9 @@ private String keyandcert()
     CreateCertificateFromCsrResult result = AppHelper.iotClient.createCertificateFromCsr(request);
     keycert[1]=result.getCertificatePem().toString();
     keycert[0]="-----BEGIN RSA PRIVATE KEY----- \n"+keycert[0]+"-----END RSA PRIVATE KEY-----\n";
-
-  //  Log.e("log",keycert[0]);
-   // Log.e("log",keycert[1]);
- AWSIotKeystoreHelper.saveCertificateAndPrivateKey(AppHelper.userid,
+ AWSIotKeystoreHelper.saveCertificateAndPrivateKey(serial,
                 result.getCertificatePem(), keyPair.getPrivate(), keystorePath,
-                AppHelper.userid, AppHelper.userid);
+         serial, serial);
 
     AttachPrincipalPolicyRequest policyAttachRequest = new AttachPrincipalPolicyRequest();
     policyAttachRequest.setPolicyName(AWS_IOT_POLICY_NAME);
@@ -317,6 +317,13 @@ private String keyandcert()
             if(result=="key")
             {
            //    new DBloaddata().execute();
+                try {
+                    mqttconnect();
+                }catch (Exception e)
+                {
+                    Log.e("log:",e.toString());
+                }
+
             }
             else
             {try {
@@ -335,66 +342,11 @@ new CreateCertificateTask().execute();
 
     public  void mqttconnect()
     {
-        KeyStore clientKeyStore=AWSIotKeystoreHelper.getIotKeystore(AppHelper.userid,keystorePath,AppHelper.userid,AppHelper.userid);
-        AppHelper.mqttManager.connect(clientKeyStore,new AWSIotMqttClientStatusCallback() {
-            @Override
-            public void onStatusChanged(final AWSIotMqttClientStatus status,
-                                        final Throwable throwable) {
-                //  Log.d(LOG_TAG, "Status = " + String.valueOf(status));
+Intent mqtts=new Intent(Mainpage.this,backgroundservice.class);
+startService(mqtts);
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (status == AWSIotMqttClientStatus.Connecting) {
-                            //tvStatus.setText("Connecting...");
-
-                        } else if (status == AWSIotMqttClientStatus.Connected) {
-                            //tvStatus.setText("Connected");
-                            mqttsub("esp8266/sns");
-
-                        } else if (status == AWSIotMqttClientStatus.Reconnecting) {
-                            if (throwable != null) {
-                                //  Log.e(LOG_TAG, "Connection error.", throwable);
-                            }
-                            //tvStatus.setText("Reconnecting");
-                        } else if (status == AWSIotMqttClientStatus.ConnectionLost) {
-                            if (throwable != null) {
-                                //  Log.e(LOG_TAG, "Connection error.", throwable);
-                            }
-                            //tvStatus.setText("Disconnected");
-                        } else {
-                            //tvStatus.setText("Disconnected");
-                        }
-                    }
-                });
-            }
-        });
     }
-    public  void mqttsub(String topic)
-    {
-        AppHelper.mqttManager.subscribeToTopic(topic, AWSIotMqttQos.QOS0,
-                new AWSIotMqttNewMessageCallback() {
-                    @Override
-                    public void onMessageArrived(final String topic, final byte[] data) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    String message = new String(data, "UTF-8");
-                                    //   Log.d(LOG_TAG, "Message arrived:");
-                                    // Log.d(LOG_TAG, "   Topic: " + topic);
-                                    Log.e("log", " Message: " + message);
 
-                                    //  tvLastMessage.setText(message);
-
-                                } catch (UnsupportedEncodingException e) {
-                                    // Log.e(LOG_TAG, "Message encoding error.", e);
-                                }
-                            }
-                        });
-                    }
-                });
-    }
 
 
 

@@ -34,10 +34,11 @@ public class Sign_Rerister extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         AppHelper.checkpool(this);
         setContentView(R.layout.activity_sign__rerister);
-
+//持續登入
         File file = new File("/data/data/com.guineatech.CareC/shared_prefs","Data.xml");
         if(file.exists()){
-            ReadValue();
+            setting = getSharedPreferences("Data",0);
+            valuestring = setting.getString("account","");
             if(!valuestring.equals("")){
                 if(AppHelper.userid==null)
                 {
@@ -45,9 +46,14 @@ public class Sign_Rerister extends AppCompatActivity {
                     AppHelper.getPool().getUser(AppHelper.userid).getSessionInBackground(authenticationHandler);
                     pwd=setting.getString("password","");
                 }
-                SendIntent();
+                Intent it = new Intent();
+                it.setClass(Sign_Rerister.this,Mainpage.class);
+                startActivity(it);
+                finish();
             }
         }
+
+
         text_Sign=(TextView)findViewById(R.id.textBt_Sign);
         bt_Ris=(Button)findViewById(R.id.bt_Ris);
         //註冊
@@ -100,17 +106,9 @@ public class Sign_Rerister extends AppCompatActivity {
 
         }
     }
-    public void ReadValue(){
-        setting = getSharedPreferences("Data",0);
-        valuestring = setting.getString("account","");
-    }
-    public void SendIntent(){
-        Intent it = new Intent();
-        it.setClass(Sign_Rerister.this,Mainpage.class);
-        startActivity(it);
-        finish();
-    }
 
+
+//登入AWS
     AuthenticationHandler authenticationHandler = new AuthenticationHandler() {
         @Override
         public void onSuccess(CognitoUserSession cognitoUserSession, CognitoDevice device) {
