@@ -8,19 +8,9 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
+
 import android.widget.TextView;
 
-import com.amazonaws.mobileconnectors.iot.AWSIotKeystoreHelper;
-import com.amazonaws.mobileconnectors.iot.AWSIotMqttClientStatusCallback;
-import com.amazonaws.mobileconnectors.iot.AWSIotMqttNewMessageCallback;
-import com.amazonaws.mobileconnectors.iot.AWSIotMqttQos;
-
-import java.io.UnsupportedEncodingException;
-import java.security.KeyStore;
-import java.util.Date;
-
-import static com.github.mikephil.charting.charts.Chart.LOG_TAG;
 
 //繼承android.app.Service
 public class backgroundservice extends Service {

@@ -1,7 +1,9 @@
 package com.guineatech.CareC;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
@@ -13,8 +15,11 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.ShareActionProvider;
 import android.widget.Toast;
 
 import com.amazonaws.mobileconnectors.dynamodbv2.document.Table;
@@ -24,6 +29,7 @@ import com.amazonaws.services.iot.model.AttachPrincipalPolicyRequest;
 import com.amazonaws.services.iot.model.CreateCertificateFromCsrRequest;
 import com.amazonaws.services.iot.model.CreateCertificateFromCsrResult;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.spongycastle.asn1.ASN1Encodable;
 import org.spongycastle.asn1.ASN1Primitive;
@@ -56,8 +62,12 @@ public class Mainpage extends AppCompatActivity {
     private String clientId=AppHelper.userid;
     public static String serial;
     private ImageView b;
+    ListView listview;
+    LayoutInflater inflater;
+    SharedPreferences sap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        sap= getSharedPreferences("userhas",0);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
             serial = Build.SERIAL;
         }else {
@@ -65,8 +75,9 @@ public class Mainpage extends AppCompatActivity {
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainpage);
+        listview = (ListView) findViewById(R.id.listv_dev);//Device listview
+        inflater  = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);//Device listview
 
-          b=(ImageView) findViewById(R.id.image_dot) ;
           btnAdd = (FloatingActionButton) findViewById(R.id.btnAdd);
 
 
@@ -76,14 +87,14 @@ public class Mainpage extends AppCompatActivity {
         AppHelper.mqttcreate();
 
         //new DBloaddata().execute();
-        b.setOnClickListener(new View.OnClickListener() {
+    /*    b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent it=new Intent();
                 it.setClass(Mainpage.this,decive_data.class);
                 startActivity(it);
             }
-        });
+        });*/
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -189,56 +200,88 @@ public class Mainpage extends AppCompatActivity {
 
         @Override
         protected String doInBackground(Void... voids) {
-            HttpURLConnection urlConnection=null;
-            InputStream is =null;
-           String result ="";
-            try {
+            File file = new File("/data/data/com.guineatech.CareC/shared_prefs","userhas.xml");
+            if(!file.exists()) {
+                HttpURLConnection urlConnection = null;
+                InputStream is = null;
+                String result = "";
+                try {
 
-                URL url=new URL("https://gr7yvkqkte.execute-api.us-west-2.amazonaws.com/dev/my-test/select");//php的位置
-                urlConnection=(HttpURLConnection) url.openConnection();//對資料庫打開連結
-                urlConnection.setDoInput(true);
-                urlConnection.setDoOutput(true);
-                urlConnection.setUseCaches(false);
-                urlConnection.setRequestMethod("POST");
-                urlConnection.setRequestProperty("Content-Type","application/json");
-                DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
-                JSONObject jsonParam = new JSONObject();
-                jsonParam.put("userid",AppHelper.userid);
-                wr.writeBytes(jsonParam.toString());
-                wr.flush();
-                wr.close();
-                is=urlConnection.getInputStream();//從database 開啟 stream
-                BufferedReader bufReader = new BufferedReader(new InputStreamReader(is, "utf-8"), 8);
-                StringBuilder builder = new StringBuilder();
-                String line = null;
-                while((line = bufReader.readLine()) != null) {
-                    builder.append(line + "\n");
+                    URL url = new URL("https://gr7yvkqkte.execute-api.us-west-2.amazonaws.com/dev/my-test/select");//php的位置
+                    urlConnection = (HttpURLConnection) url.openConnection();//對資料庫打開連結
+                    urlConnection.setDoInput(true);
+                    urlConnection.setDoOutput(true);
+                    urlConnection.setUseCaches(false);
+                    urlConnection.setRequestMethod("POST");
+                    urlConnection.setRequestProperty("Content-Type", "application/json");
+                    DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
+                    JSONObject jsonParam = new JSONObject();
+                    jsonParam.put("userid", AppHelper.userid);
+                    Log.e("log", AppHelper.userid);
+                    wr.writeBytes(jsonParam.toString());
+                    wr.flush();
+                    wr.close();
+                    is = urlConnection.getInputStream();//從database 開啟 stream
+                    BufferedReader bufReader = new BufferedReader(new InputStreamReader(is, "utf-8"), 8);
+                    StringBuilder builder = new StringBuilder();
+                    String line = null;
+                    while ((line = bufReader.readLine()) != null) {
+                        builder.append(line + "\n");
+                    }
+                    is.close();
+                    result = builder.toString();
+                } catch (Exception e) {
+                    e.printStackTrace();
+
                 }
-                is.close();
-                result = builder.toString();
+
+
+                Log.e("Log", result);
+                return result;
             }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-
-            }
-
-
-            Log.e("Log:",result);
-            return result;
+            return "";
         }
 
         @Override
-        protected void onPostExecute(String documents) {
-            super.onPostExecute(documents);
-            String devicedata=documents.replace("[","");
-            devicedata=devicedata.replace("]","");
-            if(!devicedata.equals("")){
-                devicedata=devicedata.replace("{","");
-                devicedata=devicedata.replace("}","");
+        protected void onPostExecute(String devicedata) {
+            super.onPostExecute(devicedata);
+            if(devicedata=="")
+            {
+                String tpjson=sap.getString("device","");
+                try {
+                    JSONArray jsa=new JSONArray(tpjson);
+                    Log.e("log",jsa.getJSONObject(0).toString());
+                    Log.e("log",jsa.length()+"");
+                    viewitem adapter = new viewitem(jsa,inflater);
+                    listview.setAdapter(adapter);
+                }catch (Exception e)
+                {
+                    Log.e("log",e.toString());
+                }
+            }
+            else if(!devicedata.trim().equals("[]")){
                 Log.e("Log",devicedata);
+                sap.edit()
+                        .putString("device",devicedata)
+                        .commit();
+                try {
+                    JSONArray jsa=new JSONArray(devicedata);
+                    Log.e("log",jsa.getJSONObject(0).toString());
+                    Log.e("log",jsa.length()+"");
+                    viewitem adapter = new viewitem(jsa,inflater);
+                    listview.setAdapter(adapter);
+                }catch (Exception e)
+                {
+                    Log.e("log",e.toString());
+                }
 
             }
+            else
+                {
+                    Log.e("Log","No data");
+
+                }
+
         }
     }
 
@@ -358,6 +401,14 @@ new CreateCertificateTask().execute();
         }
     }
 
+
+    private void refreshdata()
+    {
+        File file = new File("/data/data/com.guineatech.CareC/shared_prefs","userhas.xml");
+        file.delete();
+        new  DBloaddata().execute();
+
+    }
 
     public  void mqttconnect()
     {

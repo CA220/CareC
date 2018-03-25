@@ -16,7 +16,7 @@
 
     <ImageView
         android:id="@+id/image_background"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="56dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,90 +24,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/titleph" />
-
-    <ImageView
-        android:id="@+id/image_bed"
-        android:layout_width="95dp"
-        android:layout_height="75dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.457"
-        app:srcCompat="@drawable/bed" />
-
-    <ImageView
-        android:id="@+id/image_heart"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton2"
-        app:layout_constraintStart_toEndOf="@+id/image_bed"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.935"
-        app:srcCompat="@drawable/heart" />
-
-    <ImageView
-        android:id="@+id/image_breath"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton2"
-        app:layout_constraintStart_toEndOf="@+id/image_heart"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.935"
-        app:srcCompat="@drawable/breath" />
-
-    <ImageView
-        android:id="@+id/image_sleep"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton2"
-        app:layout_constraintStart_toEndOf="@+id/image_breath"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.936"
-        app:srcCompat="@drawable/sleep" />
-
-    <ImageView
-        android:id="@+id/image_dot"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toEndOf="@+id/image_sleep"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.936"
-        app:srcCompat="@drawable/thdot" />
-
-    <ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="363dp"
-        android:layout_height="10dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.538"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_bed"
-        app:layout_constraintVertical_bias="0.041"
-        app:srcCompat="@drawable/line" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/btnAdd"
@@ -132,13 +48,12 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:elevation="4dp"/>
 
-    <TextView
-        android:id="@+id/test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="56dp"
-        android:layout_marginStart="8dp"
-        android:text="TextView"
+    <ListView
+        android:id="@+id/listv_dev"
+        android:layout_width="match_parent"
+        android:layout_height="345dp"
+        android:layout_marginBottom="4dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

@@ -64,6 +64,11 @@ public class decive_data extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.decive_data);
+        Intent it=this.getIntent();
+        String dn=it.getStringExtra("devicename");
+
+        TextView t5=(TextView)findViewById(R.id.textView5);
+        t5.setText(dn);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
