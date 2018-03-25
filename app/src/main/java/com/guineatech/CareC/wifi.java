@@ -400,7 +400,6 @@ ope++;
                     try {
                         reader = new BufferedReader(in[j]);
 
-
                         // do reading, usually loop until end of file reading
                         String mLine = null;
 

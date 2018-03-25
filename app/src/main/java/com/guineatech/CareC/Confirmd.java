@@ -92,7 +92,7 @@ public class Confirmd  extends AppCompatActivity {
 
     private void exit() {
         Intent it = new Intent();
-        it.setClass(Confirmd.this, success.class);
+        it.setClass(Confirmd.this, Sign_Rerister.class);
         startActivity(it);
         finish();
     }

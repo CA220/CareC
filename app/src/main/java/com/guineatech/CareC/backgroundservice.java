@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.amazonaws.mobileconnectors.iot.AWSIotKeystoreHelper;
 import com.amazonaws.mobileconnectors.iot.AWSIotMqttClientStatusCallback;
@@ -23,13 +24,15 @@ import static com.github.mikephil.charting.charts.Chart.LOG_TAG;
 
 //繼承android.app.Service
 public class backgroundservice extends Service {
+    TextView test;
     private Handler handler = new Handler();
+
 
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
-
+/*
     @Override
     public void onStart(Intent intent, int startId) {
 
@@ -51,7 +54,7 @@ public class backgroundservice extends Service {
 
                         } else if (status == AWSIotMqttClientStatusCallback.AWSIotMqttClientStatus.Connected) {
                             //tvStatus.setText("Connected");
-                            mqttsub("esp8266/sns");
+
                       //      Log.i("time:", new Date().toString());
                         }else  if (status == AWSIotMqttClientStatusCallback.AWSIotMqttClientStatus.Reconnecting) {
                             if (throwable != null) {
@@ -120,4 +123,5 @@ public class backgroundservice extends Service {
             Log.e("log", "Subscription error.", e);
         }
     }
+    */
 }

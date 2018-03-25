@@ -4,10 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,37 +13,34 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.amazonaws.mobileconnectors.dynamodbv2.document.Table;
-import com.amazonaws.mobileconnectors.dynamodbv2.document.datatype.Document;
-import com.amazonaws.mobileconnectors.dynamodbv2.document.datatype.Primitive;
 import com.amazonaws.mobileconnectors.iot.AWSIotKeystoreHelper;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.iot.model.AttachPrincipalPolicyRequest;
 import com.amazonaws.services.iot.model.CreateCertificateFromCsrRequest;
 import com.amazonaws.services.iot.model.CreateCertificateFromCsrResult;
 
+import org.json.JSONObject;
 import org.spongycastle.asn1.ASN1Encodable;
 import org.spongycastle.asn1.ASN1Primitive;
 import org.spongycastle.asn1.pkcs.PrivateKeyInfo;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
-import java.util.List;
 
 public class Mainpage extends AppCompatActivity {
     private FloatingActionButton btnAdd;
@@ -75,10 +69,7 @@ public class Mainpage extends AppCompatActivity {
           b=(ImageView) findViewById(R.id.image_dot) ;
           btnAdd = (FloatingActionButton) findViewById(R.id.btnAdd);
 
-        //mRecyclerView=findViewById(R.id.recycler_view);
 
-        dbClient = new AmazonDynamoDBClient(AppHelper.credentialsProvider);
-        dbClient.setRegion(Region.getRegion(Regions.US_WEST_2));
 
         AppHelper.iotcreate();
         keystorePath= getFilesDir().getPath();
@@ -178,7 +169,7 @@ public class Mainpage extends AppCompatActivity {
 
             }
         });
-
+        new DBloaddata().execute();
         new CreateCertificateTask().execute();
 
 
@@ -192,34 +183,62 @@ public class Mainpage extends AppCompatActivity {
             super.onBackPressed();
         }
     }
-
-    private  class DBloaddata extends AsyncTask<Void,Void,List<Document>>
+//勞USER 有哪一些DEVICE
+    private  class DBloaddata extends AsyncTask<Void, Void, String>
     {
 
         @Override
-        protected List<Document> doInBackground(Void... voids) {
-            dbTable=Table.loadTable(dbClient, DYNAMODB_TABLE);
-            return dbTable.query(new Primitive(AppHelper.userid)).getAllResults();
+        protected String doInBackground(Void... voids) {
+            HttpURLConnection urlConnection=null;
+            InputStream is =null;
+           String result ="";
+            try {
+
+                URL url=new URL("https://gr7yvkqkte.execute-api.us-west-2.amazonaws.com/dev/my-test/select");//php的位置
+                urlConnection=(HttpURLConnection) url.openConnection();//對資料庫打開連結
+                urlConnection.setDoInput(true);
+                urlConnection.setDoOutput(true);
+                urlConnection.setUseCaches(false);
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setRequestProperty("Content-Type","application/json");
+                DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
+                JSONObject jsonParam = new JSONObject();
+                jsonParam.put("userid",AppHelper.userid);
+                wr.writeBytes(jsonParam.toString());
+                wr.flush();
+                wr.close();
+                is=urlConnection.getInputStream();//從database 開啟 stream
+                BufferedReader bufReader = new BufferedReader(new InputStreamReader(is, "utf-8"), 8);
+                StringBuilder builder = new StringBuilder();
+                String line = null;
+                while((line = bufReader.readLine()) != null) {
+                    builder.append(line + "\n");
+                }
+                is.close();
+                result = builder.toString();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+
+            }
+
+
+            Log.e("Log:",result);
+            return result;
         }
 
         @Override
-        protected void onPostExecute(List<Document> documents) {
+        protected void onPostExecute(String documents) {
             super.onPostExecute(documents);
+            String devicedata=documents.replace("[","");
+            devicedata=devicedata.replace("]","");
+            if(!devicedata.equals("")){
+                devicedata=devicedata.replace("{","");
+                devicedata=devicedata.replace("}","");
+                Log.e("Log",devicedata);
 
-
-            if(documents!=null)
-            {
-                /*ArrayAdapter<Document> ld = new ArrayAdapter<Document>(Mainpage.this, R.layout.listlayout,R.id.text, documents);
-
-                mRecyclerView.setAdapter(ld);*/
             }
-            try {
-                waitDialog.dismiss();
-            }
-            catch (Exception e) {
-                //
-            }
-
         }
     }
 
