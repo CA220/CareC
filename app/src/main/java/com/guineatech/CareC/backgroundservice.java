@@ -130,6 +130,10 @@ public class backgroundservice extends Service {
     public void onDestroy() {
 
         try {
+            for (int i = 0; i < deviceid.length; i++) {
+                AppHelper.mqttManager.unsubscribeTopic(deviceid[i]);
+                Log.e("log", deviceid[i]);
+            }
             AppHelper.mqttManager.disconnect();
         } catch (Exception e) {
             Log.e("log", "Disconnect error.", e);

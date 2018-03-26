@@ -37,6 +37,7 @@ Button btsub;
       btsub.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
+              backgroundservice.mqttsub(deid + "/#");
               Intent intent = new Intent(setDevice.this, Mainpage.class);
               intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
               startActivity(intent);

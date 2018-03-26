@@ -207,6 +207,9 @@ public class Mainpage extends AppCompatActivity {
             frist = false;
             Intent mqtts = new Intent(Mainpage.this, backgroundservice.class);
             startService(mqtts);
+        } else {
+
+
         }
 
 
