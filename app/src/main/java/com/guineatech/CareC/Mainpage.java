@@ -6,12 +6,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
@@ -19,7 +19,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ShareActionProvider;
 import android.widget.Toast;
 
 import com.amazonaws.mobileconnectors.dynamodbv2.document.Table;
@@ -49,22 +48,23 @@ import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 
 public class Mainpage extends AppCompatActivity {
+    public static String serial;
+    static boolean frist = true;
+    public String[] keycert = new String[2];
+    ListView listview;
+    LayoutInflater inflater;
+    SharedPreferences sap;
     private FloatingActionButton btnAdd;
-
     private AmazonDynamoDBClient dbClient;
     private Table dbTable;
     private String DYNAMODB_TABLE="tusre";
    // private ListView mRecyclerView;
     private ProgressDialog waitDialog;
-    public String [] keycert=new String[2];
     private String AWS_IOT_POLICY_NAME = "tre-Policy";
     private String keystorePath;
     private String clientId=AppHelper.userid;
-    public static String serial;
     private ImageView b;
-    ListView listview;
-    LayoutInflater inflater;
-    SharedPreferences sap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sap= getSharedPreferences("userhas",0);
@@ -75,10 +75,10 @@ public class Mainpage extends AppCompatActivity {
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainpage);
-        listview = (ListView) findViewById(R.id.listv_dev);//Device listview
+        listview = findViewById(R.id.listv_dev);//Device listview
         inflater  = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);//Device listview
 
-          btnAdd = (FloatingActionButton) findViewById(R.id.btnAdd);
+        btnAdd = findViewById(R.id.btnAdd);
 
 
 
@@ -113,10 +113,10 @@ public class Mainpage extends AppCompatActivity {
         });
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
               this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -187,21 +187,41 @@ public class Mainpage extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
     }
+
+    private void refreshdata() {
+        File file = new File("/data/data/com.guineatech.CareC/shared_prefs", "userhas.xml");
+        file.delete();
+        new DBloaddata().execute();
+
+    }
+
+    public void mqttconnect() {
+        if (frist) {
+            frist = false;
+            Intent mqtts = new Intent(Mainpage.this, backgroundservice.class);
+            startService(mqtts);
+        }
+
+
+    }
+
 //勞USER 有哪一些DEVICE
     private  class DBloaddata extends AsyncTask<Void, Void, String>
     {
 
         @Override
         protected String doInBackground(Void... voids) {
-            File file = new File("/data/data/com.guineatech.CareC/shared_prefs","userhas.xml");
-            if(!file.exists()) {
+            //不是沒次都勞Data 更新或USER下拉才更新
+          /*  File file = new File("/data/data/com.guineatech.CareC/shared_prefs","userhas.xml");
+            if(!file.exists())*/
+            {
                 HttpURLConnection urlConnection = null;
                 InputStream is = null;
                 String result = "";
@@ -239,7 +259,7 @@ public class Mainpage extends AppCompatActivity {
                 Log.e("Log", result);
                 return result;
             }
-            return "";
+            //           return "";
         }
 
         @Override
@@ -399,22 +419,6 @@ Log.e("log",result);
 new CreateCertificateTask().execute();
             }
         }
-    }
-
-
-    private void refreshdata()
-    {
-        File file = new File("/data/data/com.guineatech.CareC/shared_prefs","userhas.xml");
-        file.delete();
-        new  DBloaddata().execute();
-
-    }
-
-    public  void mqttconnect()
-    {
-Intent mqtts=new Intent(Mainpage.this,backgroundservice.class);
-startService(mqtts);
-
     }
 
 

@@ -6,26 +6,81 @@ package com.guineatech.CareC;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 
-import android.widget.TextView;
+import com.amazonaws.mobileconnectors.iot.AWSIotKeystoreHelper;
+import com.amazonaws.mobileconnectors.iot.AWSIotMqttClientStatusCallback;
+import com.amazonaws.mobileconnectors.iot.AWSIotMqttNewMessageCallback;
+import com.amazonaws.mobileconnectors.iot.AWSIotMqttQos;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.security.KeyStore;
 
 
 //繼承android.app.Service
 public class backgroundservice extends Service {
-    TextView test;
-    private Handler handler = new Handler();
 
+    String[] deviceid;
+    private Handler handler = new Handler();
+    private Runnable mqttconn;
+
+    public static void mqttsub(String topic) {
+        try {
+
+
+            AppHelper.mqttManager.subscribeToTopic(topic, AWSIotMqttQos.QOS0,
+                    new AWSIotMqttNewMessageCallback() {
+
+                        @Override
+                        public void onMessageArrived(final String topic, final byte[] data) {
+                            try {
+
+                                String[] tops = topic.split("/");
+                                String type = tops[1];
+
+
+                                String message = new String(data, "UTF-8");
+                                JSONObject meg = new JSONObject(message);
+                                Log.e("log", meg.getString("message"));
+
+                            } catch (Exception e) {
+                                Log.e("log", "Message encoding error.", e);
+                            }
+
+                        }
+                    });
+        } catch (Exception e) {
+            Log.e("log", "Subscription error.", e);
+        }
+    }
 
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
-/*
+
     @Override
     public void onStart(Intent intent, int startId) {
+        SharedPreferences spa = getSharedPreferences("userhas", 0);
+        String tp = spa.getString("device", "");
+        Log.e("log", tp);
+        Log.e("log", "123");
 
+        try {
+            JSONArray jsa = new JSONArray(tp);
+            deviceid = new String[jsa.length()];
+            for (int i = 0; i < jsa.length(); i++) {
+                deviceid[i] = jsa.getJSONObject(i).getString("deviceid") + "/#";
+                Log.e("log", deviceid[i]);
+            }
+        } catch (Exception e) {
+            Log.e("log", e.toString());
+        }
 
        KeyStore clientKeyStore= AWSIotKeystoreHelper.getIotKeystore(Mainpage.serial, getFilesDir().getPath(),Mainpage.serial,Mainpage.serial);
         AppHelper.mqttManager.connect(clientKeyStore,new AWSIotMqttClientStatusCallback() {
@@ -40,29 +95,29 @@ public class backgroundservice extends Service {
                         //log目前時間
 
                         if (status == AWSIotMqttClientStatusCallback.AWSIotMqttClientStatus.Connecting) {
-                            //tvStatus.setText("Connecting...");
+
 
                         } else if (status == AWSIotMqttClientStatusCallback.AWSIotMqttClientStatus.Connected) {
-                            //tvStatus.setText("Connected");
 
-                      //      Log.i("time:", new Date().toString());
+                            for (int i = 0; i < deviceid.length; i++) {
+                                mqttsub(deviceid[i]);
+                            }
+
                         }else  if (status == AWSIotMqttClientStatusCallback.AWSIotMqttClientStatus.Reconnecting) {
                             if (throwable != null) {
-                                //  Log.e(LOG_TAG, "Connection error.", throwable);
 
                             }
-                            //tvStatus.setText("Reconnecting");
+
                         } else if (status == AWSIotMqttClientStatusCallback.AWSIotMqttClientStatus.ConnectionLost) {
                             if (throwable != null) {
-                                //  Log.e(LOG_TAG, "Connection error.", throwable);
+
                             }
-                            //tvStatus.setText("Disconnected");
+
                         } else {
-                            //tvStatus.setText("Disconnected");
+
                         }
 
-                      //  Log.i("time:", new Date().toString());
-                        handler.postDelayed(this, 1000);
+
                     }
                 }, 1000);
 
@@ -83,35 +138,4 @@ public class backgroundservice extends Service {
         super.onDestroy();
     }
 
-    private Runnable mqttconn ;
-
-    public static void mqttsub(String topic)
-    {
-        try {
-
-
-        AppHelper.mqttManager.subscribeToTopic(topic, AWSIotMqttQos.QOS0,
-                new AWSIotMqttNewMessageCallback() {
-                    @Override
-                    public void onMessageArrived(final String topic, final byte[] data) {
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    String message = new String(data, "UTF-8");
-
-
-                                } catch (UnsupportedEncodingException e) {
-                                    Log.e(LOG_TAG, "Message encoding error.", e);
-                                }
-                            }
-                        };
-                    }
-                });
-        }
-        catch (Exception e) {
-            Log.e("log", "Subscription error.", e);
-        }
-    }
-    */
 }

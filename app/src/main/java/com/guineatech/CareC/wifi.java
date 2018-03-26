@@ -1,7 +1,6 @@
 package com.guineatech.CareC;
 
 
-
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -9,56 +8,33 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.List;
-
-
-import android.util.Base64;
-import android.util.Log;
-import android.net.Uri;
-
-import android.net.wifi.WifiManager;
-
-import android.view.View;
-import android.widget.Adapter;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
-
-import android.widget.Toast;
-
-
-import com.amazonaws.mobileconnectors.iot.AWSIotMqttManager;
-import com.amazonaws.services.iot.model.AttachPrincipalPolicyRequest;
-import com.amazonaws.services.iot.model.CreateCertificateFromCsrRequest;
-import com.amazonaws.services.iot.model.CreateCertificateFromCsrResult;
-
-import org.spongycastle.asn1.ASN1Encodable;
-import org.spongycastle.asn1.ASN1Primitive;
-import org.spongycastle.asn1.pkcs.PrivateKeyInfo;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 
@@ -66,37 +42,58 @@ import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 
 public class wifi extends AppCompatActivity {
 
+    EditText nickname;
     private Context context = this;
     private WifiManager wifiManager;
     private Spinner spinnerWifis;
     private String bcode;
     private Button btstep;
     private String wifissid="",wifipwd="",endpoint=AppHelper.CUSTOMER_SPECIFIC_ENDPOINT;
-
-
     private AlertDialog userDialog;
     private ProgressDialog waitDialog;
-
     private EditText ed_pwd;
+
+    //開GPS
+    public static final void openGPS(Context context) {
+        Intent GPSIntent = new Intent();
+        GPSIntent.setClassName("com.android.settings",
+                "com.android.settings.widget.SettingsAppWidgetProvider");
+        GPSIntent.addCategory("android.intent.category.ALTERNATIVE");
+        GPSIntent.setData(Uri.parse("custom:3"));
+        try {
+            PendingIntent.getBroadcast(context, 0, GPSIntent, 0).send();
+        } catch (PendingIntent.CanceledException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wifi);
         Intent it=this.getIntent();
          bcode=it.getStringExtra("bcode");
-        spinnerWifis = (Spinner)findViewById(R.id.spinner);
+        spinnerWifis = findViewById(R.id.spinner);
         ed_pwd=findViewById(R.id.edit_pwd);
-        btstep= (Button) findViewById(R.id.bt_step);
+        btstep = findViewById(R.id.bt_step);
         if (ActivityCompat.checkSelfPermission(wifi.this, ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             ActivityCompat.requestPermissions(wifi.this,new String[]{ACCESS_COARSE_LOCATION},1);
         }
-
+        nickname = findViewById(R.id.edit_nickname);
 
 //Next step
         btstep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent it = new Intent();
+                it.putExtra("deviceid", bcode);
+                it.putExtra("nickname", nickname.getText().toString());
+                Log.e("log", nickname.getText().toString());
+                it.setClass(wifi.this, setDevice.class);
+                startActivity(it);
+                //連上Device
+                /*
                 wifissid=spinnerWifis.getSelectedItem().toString();
                 wifipwd=ed_pwd.getText().toString();
                Adapter allwifi= spinnerWifis.getAdapter();
@@ -133,12 +130,14 @@ ope++;
                 else
 
                 Log.e("log","Can't no find Device\nPlease Check your Device switch to Seting Mode");
+            */
             }
         });
         openGPS(context);
         IsEnable();
         scan();
     }
+
 //跳出的視窗
     private void showDialogMessage(String title, String body, final int Whatis) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -178,6 +177,7 @@ ope++;
 
 
     }
+
     //搜尋WIFI
     private void scan() {
         // Register the Receiver in some part os fragment...
@@ -192,7 +192,6 @@ ope++;
 
         // Inside the receiver:
     }
-
 
     private void wifiScanReceive(){
         // the result.size() is 0 after update to Android v6.0, same code working in older devices.
@@ -222,20 +221,8 @@ ope++;
             }
         });
     }
-   //開GPS
-    public static final void openGPS(Context context) {
-        Intent GPSIntent = new Intent();
-        GPSIntent.setClassName("com.android.settings",
-                "com.android.settings.widget.SettingsAppWidgetProvider");
-        GPSIntent.addCategory("android.intent.category.ALTERNATIVE");
-        GPSIntent.setData(Uri.parse("custom:3"));
-        try {
-            PendingIntent.getBroadcast(context, 0, GPSIntent, 0).send();
-        } catch (PendingIntent.CanceledException e) {
-            e.printStackTrace();
-        }
-    }
-//有連過的wifi
+
+    //有連過的wifi
     public boolean Connect(WifiConfiguration wf) {
         IsEnable();
 // 状态变成WIFI_STATE_ENABLED的时候才能执行下面的语句，即当状态为WIFI_STATE_ENABLING时，让程序在while里面跑
@@ -271,10 +258,7 @@ ope++;
         wifiManager.saveConfiguration();
         return bRet;
     }
-    //參數
-    public enum WifiCipherType {
-        WIFICIPHER_WEP, WIFICIPHER_WPA, WIFICIPHER_NOPASS, WIFICIPHER_INVALID
-    }
+
     //玫璉過的wifi
     private WifiConfiguration CreateWifiInfo(String SSID, String Password,
                                              WifiCipherType Type) {
@@ -336,6 +320,12 @@ ope++;
         }
         return config;
     }
+
+    //參數
+    public enum WifiCipherType {
+        WIFICIPHER_WEP, WIFICIPHER_WPA, WIFICIPHER_NOPASS, WIFICIPHER_INVALID
+    }
+
 //連到裝置
     public class conndecives extends AsyncTask<Void,Void,String>
     {
