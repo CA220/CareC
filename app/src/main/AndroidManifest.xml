@@ -41,7 +41,6 @@
         <activity android:name=".Confirmd" />
         <activity android:name=".Mainpage" />
         <activity android:name=".QR"/>
-        <activity android:name=".SplashActivity"/>
         <activity android:name=".wifi"/>
         <activity android:name=".setDevice"/>
         <activity android:name=".decive_data"/>
