@@ -1,84 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.guineatech.CareC.QR"
     android:background="#DDDDDD"
-   >
-
+    tools:context="com.guineatech.CareC.QR">
     <ImageView
-        android:id="@+id/imageView9"
+        android:id="@+id/back"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.024"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/key" />
+        android:src="@drawable/ic_chevron_left_black_24dp"
+
+        />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/tiofqr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="SET PHONE"
-        android:textColor="@color/white"
-        android:textSize="18sp"
+
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:text="Scan QR"
+        android:textSize="32dp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
+        />
 
     <Button
         android:id="@+id/QRbt"
-        android:layout_width="250dp"
-        android:layout_height="60dp"
-        android:layout_alignParentTop="true"
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tiofqr"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/qrcode"
+
+        android:layout_marginTop="160dp"
         android:onClick="onScanQrcode"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.378" />
+        android:text="QR code"
+
+        />
 
     <Button
         android:id="@+id/gowifit"
-        android:layout_width="300dp"
-        android:layout_height="65dp"
-        android:layout_marginBottom="64dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:background="@drawable/nextstep"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_width="304dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="80dp"
+        android:text="Confirm" />
 
     <EditText
-        android:id="@+id/edbc"
-        android:layout_width="wrap_content"
+        android:id="@+id/edit_bcode"
+        android:layout_width="304dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="28dp"
+        android:layout_above="@id/gowifit"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/QRbt" />
+        android:hint="Barcode"
+        android:inputType="textPersonName" />
 
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

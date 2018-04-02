@@ -1,46 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#DDDDDD"
-    >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/imageView9"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.024"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/key" />
-
         <TextView
             android:id="@+id/textView4"
-            android:layout_width="256dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:gravity="center"
+
+            android:orientation="horizontal"
             android:text="My Profile"
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="32dp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
@@ -54,8 +37,8 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_margin="16dp"
-            android:background="@drawable/biglogo"
-            android:orientation="horizontal" />
+            android:orientation="horizontal"
+            android:src="@drawable/ic_head_40dp" />
 
         <TextView
             android:id="@+id/name"
@@ -73,7 +56,7 @@
         android:id="@+id/imageView17"
         android:layout_width="match_parent"
         android:layout_height="15dp"
-        app:srcCompat="@drawable/line"
+
         tools:layout_editor_absoluteX="143dp"
         tools:layout_editor_absoluteY="332dp" />
 
@@ -103,7 +86,7 @@
         android:id="@+id/imageView18"
         android:layout_width="match_parent"
         android:layout_height="15dp"
-        app:srcCompat="@drawable/line"
+
         tools:layout_editor_absoluteX="143dp"
         tools:layout_editor_absoluteY="332dp" />
 
@@ -133,7 +116,7 @@
         android:id="@+id/imageView20"
         android:layout_width="match_parent"
         android:layout_height="15dp"
-        app:srcCompat="@drawable/line"
+
         tools:layout_editor_absoluteX="143dp"
         tools:layout_editor_absoluteY="332dp" />
 
@@ -163,7 +146,7 @@
         android:id="@+id/imageView21"
         android:layout_width="match_parent"
         android:layout_height="15dp"
-        app:srcCompat="@drawable/line"
+
         tools:layout_editor_absoluteX="143dp"
         tools:layout_editor_absoluteY="332dp" />
 
@@ -193,7 +176,7 @@
         android:id="@+id/imageView22"
         android:layout_width="match_parent"
         android:layout_height="15dp"
-        app:srcCompat="@drawable/line"
+
         tools:layout_editor_absoluteX="143dp"
         tools:layout_editor_absoluteY="332dp" />
 

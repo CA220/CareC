@@ -1,22 +1,22 @@
 package com.guineatech.CareC;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.Manifest;
-
-import android.support.v4.app.ActivityCompat;
-import static android.Manifest.permission.*;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import  android.widget.TextView;
+
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class QR extends AppCompatActivity {
     private EditText edcode;
@@ -28,7 +28,7 @@ public class QR extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr);
 
-        edcode=findViewById(R.id.edbc);
+        edcode = findViewById(R.id.edit_bcode);
         gowifit=findViewById(R.id.gowifit);
         if (ActivityCompat.checkSelfPermission(QR.this, CAMERA) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling

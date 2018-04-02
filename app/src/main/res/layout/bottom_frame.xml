@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/bottomitem"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <RadioGroup
+            android:id="@+id/rgHomeMenu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:checked="true"
+                android:drawableTop="@drawable/ic_home_black_24dp"
+                android:gravity="center"
+                android:paddingBottom="5dp"
+                android:paddingTop="8dp"
+                android:text="@string/title_home"
+                android:textSize="8dp" />
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:drawableTop="@drawable/ic_dashboard_black_24dp"
+                android:gravity="center"
+                android:paddingBottom="5dp"
+                android:paddingTop="8dp"
+                android:text="@string/title_wakeme"
+                android:textSize="8dp" />
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:drawableTop="@drawable/ic_notifications_black_24dp"
+                android:gravity="center"
+                android:paddingBottom="5dp"
+                android:paddingTop="8dp"
+                android:text="@string/title_help"
+                android:textSize="8dp" />
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:drawableTop="@drawable/ic_notifications_black_24dp"
+                android:gravity="center"
+                android:paddingBottom="5dp"
+                android:paddingTop="8dp"
+                android:text="@string/title_account"
+                android:textSize="8dp" />
+        </RadioGroup>
+    </android.support.design.widget.AppBarLayout>
+
+    <include
+        layout="@layout/activity_mainpage"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/bottomitem" />
+</RelativeLayout>

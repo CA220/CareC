@@ -26,8 +26,8 @@
         android:theme="@style/AppTheme">
       <!--  android:largeHeap="true"//強制加大APP記憶空間 -->
 
-        <service android:name = ".backgroundservice">
-        </service>
+        <service android:name=".backgroundservice" />
+
         <activity android:name=".Sign_Rerister">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

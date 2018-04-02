@@ -8,9 +8,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
@@ -19,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.amazonaws.mobileconnectors.dynamodbv2.document.Table;
 import com.amazonaws.mobileconnectors.iot.AWSIotKeystoreHelper;
@@ -67,14 +63,17 @@ public class Mainpage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Decive DATA 放的地方
         sap= getSharedPreferences("userhas",0);
+
+        //手機的唯一值Serial 識別用
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
             serial = Build.SERIAL;
         }else {
             serial=null;
         }
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mainpage);
+        setContentView(R.layout.bottom_frame);
         listview = findViewById(R.id.listv_dev);//Device listview
         inflater  = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);//Device listview
 
@@ -116,13 +115,10 @@ public class Mainpage extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-              this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-       toggle.syncState();
 
-        findViewById(R.id.btn1).setOnClickListener(new View.OnClickListener() {
+
+
+      /*  findViewById(R.id.btn1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent it =new Intent();
@@ -179,21 +175,14 @@ public class Mainpage extends AppCompatActivity {
                 onBackPressed();
 
             }
-        });
+        });*/
+        //抓金鑰和DATA
         new DBloaddata().execute();
         new CreateCertificateTask().execute();
 
 
     }
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
+
 
     private void refreshdata() {
         File file = new File("/data/data/com.guineatech.CareC/shared_prefs", "userhas.xml");

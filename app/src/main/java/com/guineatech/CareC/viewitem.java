@@ -56,7 +56,7 @@ public class viewitem extends BaseAdapter {
 
             holder = new ViewHolder();
 
-            view = inflater.inflate(R.layout.listv, null);
+            view = inflater.inflate(R.layout.listview_item, null);
             holder.Name = view.findViewById(R.id.user);
             holder.chart = view.findViewById(R.id.cht);
             holder.peo = view.findViewById(R.id.peo);
@@ -64,16 +64,16 @@ public class viewitem extends BaseAdapter {
             holder.heart = view.findViewById(R.id.heart);
             holder.brd = view.findViewById(R.id.brd);
             holder.sleep = view.findViewById(R.id.sleep);
-            holder.dot = view.findViewById(R.id.dot);
+
             holder.rlBorder = view.findViewById(R.id.llBorder);
 
-            holder.bed.setImageResource(R.drawable.bed);
-            holder.heart.setImageResource(R.drawable.heart);
-            holder.brd.setImageResource(R.drawable.breath);
-            holder.sleep.setImageResource(R.drawable.sleep);
-            holder.peo.setImageResource(R.drawable.head_portrait);
-            holder.dot.setImageResource(R.drawable.thdot);
-            holder.dot.setOnClickListener(new View.OnClickListener() {
+            holder.bed.setImageResource(R.drawable.ic_bed_80_40);
+            holder.heart.setImageResource(R.drawable.ic_heart_40dp);
+            holder.brd.setImageResource(R.drawable.ic_brd);
+            holder.sleep.setImageResource(R.drawable.ic_sleep);
+            holder.peo.setImageResource(R.drawable.ic_head_40dp);
+
+            holder.rlBorder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent godt = new Intent();
@@ -108,7 +108,7 @@ public class viewitem extends BaseAdapter {
         ImageView heart;
         ImageView brd;
         ImageView sleep;
-        ImageView dot;
+
 
     }
 }

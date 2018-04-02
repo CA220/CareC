@@ -49,5 +49,12 @@
     <string name="Help_feedback">\u25C6 Help \u0026  feedback</string>
     <string name="Sign_out">\u25C6 Sign out</string>
 
+
+    <!-- Bottom item -->
+    <string name="title_home">Home</string>
+    <string name="title_wakeme">Wakeme</string>
+    <string name="title_help">Help</string>
+    <string name="title_account">Account</string>
     <string name="action_settings">Settings</string>
+
 </resources>

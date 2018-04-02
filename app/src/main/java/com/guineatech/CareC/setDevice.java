@@ -33,7 +33,7 @@ Button btsub;
         deid = it.getStringExtra("deviceid");
         na = it.getStringExtra("nickname");
         Log.e("log", na);
-        btsub = findViewById(R.id.t);
+        btsub = findViewById(R.id.bt_dataok);
       btsub.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {

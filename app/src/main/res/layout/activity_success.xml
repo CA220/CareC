@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <ImageView
         android:id="@+id/successjpg"
         android:layout_width="240dp"
@@ -14,7 +13,7 @@
         app:srcCompat="@color/button_default" />
 
     <Button
-        android:id="@+id/bt_dataok"
+        android:id="@+id/Logoinpage"
         android:layout_width="304dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/successjpg"

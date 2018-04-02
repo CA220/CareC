@@ -3,21 +3,14 @@ package com.guineatech.CareC;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.icu.util.TimeZone;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,11 +30,8 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.MonthDay;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -50,33 +40,34 @@ import java.util.List;
  */
 
 public class decive_data extends AppCompatActivity {
+    TextView t0, t1, t2;
+    Button b1, b2, b3;
+    String BMS = "";
+    XAxis x1;
     private AmazonDynamoDBClient dbClient;
     private Table dbTable;
     private String DYNAMODB_TABLE="SSTP";
     // private ListView mRecyclerView;
     private ProgressDialog waitDialog;
-    TextView t0,t1,t2;
-    Button b1,b2,b3;
     private LineChart m;
-    String BMS="";
-    XAxis x1;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.decive_data);
+        setContentView(R.layout.activity_showdata);
         Intent it=this.getIntent();
         String dn=it.getStringExtra("devicename");
 
-        TextView t5=(TextView)findViewById(R.id.textView5);
+        TextView t5 = findViewById(R.id.textView5);
         t5.setText(dn);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         dbClient = new AmazonDynamoDBClient(AppHelper.credentialsProvider);
         dbClient.setRegion(Region.getRegion(Regions.US_WEST_2));
 
-        m=(LineChart)findViewById(R.id.chart);
+        m = findViewById(R.id.chart);
         m.setDragEnabled(true);
         m.setDrawingCacheEnabled(false);
 
@@ -91,29 +82,6 @@ public class decive_data extends AppCompatActivity {
         t1=findViewById(R.id.textView);
         t2=findViewById(R.id.textView2);
 
-        b1=findViewById(R.id.button4);
-        b2=findViewById(R.id.button5);
-        b3=findViewById(R.id.button6);
-
-
-        b1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new  DBloaddata().execute("day");
-            }
-        });
-        b2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new  DBloaddata().execute("month");
-            }
-        });
-        b3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new  DBloaddata().execute("week");
-            }
-        });
 
     }
     @Override
@@ -149,13 +117,14 @@ public class decive_data extends AppCompatActivity {
     }
     private  class DBloaddata extends AsyncTask<String,Void,List<Document>>
     {
+        String howlong;
         DBloaddata()
         {
             waitDialog = new ProgressDialog(decive_data.this);
             waitDialog.setTitle("Load......");
             waitDialog.show();
         }
-        String howlong;
+
         @Override
         protected List<Document> doInBackground(String... voids) {
             dbTable= Table.loadTable(dbClient, DYNAMODB_TABLE);
