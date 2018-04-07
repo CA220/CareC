@@ -36,6 +36,19 @@
         android:inputType="textPersonName"
         android:textSize="16dp" />
 
+    <EditText
+        android:id="@+id/et_useremail"
+        android:layout_width="304dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/et_code"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="24dp"
+        android:ems="10"
+        android:hint="Email"
+        android:inputType="textPersonName"
+        android:textSize="16dp"
+        android:visibility="invisible" />
+
     <Button
         android:id="@+id/bt_con"
         android:layout_width="304dp"
@@ -45,5 +58,13 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="80dp"
         android:text="confirm" />
+
+    <TextView
+        android:id="@+id/tv_recode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/et_code"
+        android:layout_below="@id/et_code"
+        android:text="ResendCode" />
 
 </RelativeLayout>

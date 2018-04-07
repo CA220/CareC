@@ -3,12 +3,14 @@ package com.guineatech.CareC;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
@@ -19,16 +21,62 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHan
 public class Rerister extends AppCompatActivity {
     EditText et_Mail,et_pwds,et_pwd;
     Button nexts;
+    TextView comfim;
     private ProgressDialog waitDialog;
     private AlertDialog userDialog;
+    SignUpHandler signupCallback = new SignUpHandler() {
+
+        @Override
+        public void onSuccess(CognitoUser cognitoUser, boolean userConfirmed, CognitoUserCodeDeliveryDetails cognitoUserCodeDeliveryDetails) {
+            // Sign-up was successful
+            closeWaitDialog();
+            // Check if this user (cognitoUser) needs to be confirmed
+            if (!userConfirmed) {
+                // This user must be confirmed and a confirmation code was sent to the user
+                // cognitoUserCodeDeliveryDetails will indicate where the confirmation code was sent
+                // Get the confirmation code from user
+                showDialogMessage("Sign up successful!", "successful!", true);
+
+
+            } else {
+                // The user has already been confirmed
+                showDialogMessage("Sign up successful!", et_Mail.getText().toString() + " has been Confirmed", false);
+            }
+
+        }
+
+        @Override
+        public void onFailure(Exception exception) {
+            // Sign-up failed, check exception for the cause
+            closeWaitDialog();
+            showDialogMessage("Sign up Fail!", AppHelper.formatException(exception), false);
+        }
+    };
+
+
+    //註冊
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rerister);
-        et_Mail= (EditText) findViewById(R.id.et_Mail);
-        et_pwds= (EditText) findViewById(R.id.et_pwds);
-        et_pwd= (EditText) findViewById(R.id.et_pwd);
-        nexts= (Button) findViewById(R.id.nexts);
+
+//        userDialog.setCancelable(false);
+
+        et_Mail = findViewById(R.id.et_Mail);
+        et_pwds = findViewById(R.id.et_pwds);
+        et_pwd = findViewById(R.id.et_pwd);
+        nexts = findViewById(R.id.nexts);
+
+
+        ImageView backic = findViewById(R.id.back);
+        backic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
         AppHelper.checkpool(getApplicationContext());
         nexts.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,43 +102,6 @@ public class Rerister extends AppCompatActivity {
             }
         });
     }
-
-
-    //註冊
-
-
-
-
-
-    SignUpHandler signupCallback = new SignUpHandler() {
-
-        @Override
-        public void onSuccess(CognitoUser cognitoUser, boolean userConfirmed, CognitoUserCodeDeliveryDetails cognitoUserCodeDeliveryDetails) {
-            // Sign-up was successful
-            closeWaitDialog();
-            // Check if this user (cognitoUser) needs to be confirmed
-            if(!userConfirmed) {
-                // This user must be confirmed and a confirmation code was sent to the user
-                // cognitoUserCodeDeliveryDetails will indicate where the confirmation code was sent
-                // Get the confirmation code from user
-                showDialogMessage("Sign up successful!","successful!", true);
-
-
-            }
-            else {
-                // The user has already been confirmed
-                showDialogMessage("Sign up successful!",et_Mail.getText().toString()+" has been Confirmed", false);
-            }
-
-        }
-
-        @Override
-        public void onFailure(Exception exception) {
-            // Sign-up failed, check exception for the cause
-            closeWaitDialog();
-            showDialogMessage("Sign up Fail!",et_Mail.getText().toString()+" has been Sign up", false);
-        }
-    };
 
     private void showWaitDialog(String message) {
         closeWaitDialog();

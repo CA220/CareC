@@ -70,7 +70,7 @@ Button btsub;
                     jsonParam.put("deviceid", deid);
                     jsonParam.put("userid", AppHelper.userid);
                     jsonParam.put("nickname", na);
-
+                    Log.e("log", deid + na);
                     wr.writeBytes(jsonParam.toString());
                     wr.flush();
                     wr.close();
@@ -98,11 +98,12 @@ Button btsub;
         @Override
         protected void onPostExecute(String devicedata) {
             super.onPostExecute(devicedata);
-            if (devicedata.equals(deid + "is succeeded add")) {
-
+            if (devicedata == deid + "is succeeded add") {
+                btsub.setEnabled(true);
 
             } else {
                 Log.e("log", "Erorr");
+
             }
 
         }

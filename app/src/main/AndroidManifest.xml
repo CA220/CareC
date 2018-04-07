@@ -51,6 +51,7 @@
         <activity android:name=".birthday"/>
         <activity android:name=".district"/>
         <activity android:name=".notifications"/>
+        <activity android:name=".ConfrimHome" />
         </application>
 
     </manifest>

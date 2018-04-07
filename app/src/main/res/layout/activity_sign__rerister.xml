@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/textBt_Sign"
         android:layout_centerHorizontal="true"
-        android:layout_margin="24dp"
+        android:layout_marginTop="24dp"
         android:text="Ris"
         android:textSize="32dp" />
 
@@ -38,5 +38,14 @@
         android:layout_centerHorizontal="true"
         android:layout_margin="120dp"
         app:srcCompat="@color/button_default" />
+
+    <TextView
+        android:id="@+id/tv_confrim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/bt_Ris"
+        android:layout_below="@+id/bt_Ris"
+        android:text="Confrim Sign up"
+        android:textSize="16dp" />
 
 </RelativeLayout>

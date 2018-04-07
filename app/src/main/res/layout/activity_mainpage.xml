@@ -4,11 +4,15 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <ImageView
+
+    <AdapterViewFlipper
         android:id="@+id/image_background"
         android:layout_width="match_parent"
         android:layout_height="240dp"
-        android:layout_below="@+id/toolbar" />
+        android:layout_below="@+id/toolbar"
+        android:autoStart="true"
+        android:flipInterval="1500"
+        android:loopViews="true" />
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/btnAdd"
         android:layout_width="80dp"

@@ -10,7 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,22 +42,33 @@ import java.util.List;
 
 public class decive_data extends AppCompatActivity {
     TextView t0, t1, t2;
-    Button b1, b2, b3;
+
     String BMS = "";
     XAxis x1;
     private AmazonDynamoDBClient dbClient;
     private Table dbTable;
     private String DYNAMODB_TABLE="SSTP";
-    // private ListView mRecyclerView;
+
     private ProgressDialog waitDialog;
     private LineChart m;
-
+    private View mapage, datapage;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_showdata);
+        super.onCreate(savedInstanceState);
+        mapage = findViewById(R.id.ln_main);
+
+
         Intent it=this.getIntent();
         String dn=it.getStringExtra("devicename");
+
+        ImageView backic = findViewById(R.id.back);
+        backic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         TextView t5 = findViewById(R.id.textView5);
         t5.setText(dn);
