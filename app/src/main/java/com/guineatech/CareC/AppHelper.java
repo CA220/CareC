@@ -1,6 +1,7 @@
 package com.guineatech.CareC;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.AnonymousAWSCredentials;
@@ -68,7 +69,22 @@ public class AppHelper {
         }
     }
 
+    public static String formatException(Exception exception) {
+        String formattedString = "Internal Error";
+        Log.e("Log", " -- Error: " + exception.toString());
+        Log.getStackTraceString(exception);
 
+        String temp = exception.getMessage();
+
+        if (temp != null && temp.length() > 0) {
+            formattedString = temp.split("\\(")[0];
+            if (temp != null && temp.length() > 0) {
+                return formattedString;
+            }
+        }
+
+        return formattedString;
+    }
 
 
 }

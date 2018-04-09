@@ -2,7 +2,6 @@ package com.guineatech.CareC;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -17,27 +16,13 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GenericHa
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.VerificationHandler;
 
 /**
- * Created by CAHans on 2017/12/28.
+ * Created by CAHans on 2018/4/8.
  */
 
-public class Confirmd  extends AppCompatActivity {
-
-    Button con;
-    EditText code;
-    TextView resend;
-    private AlertDialog userDialog;
-    VerificationHandler resendConfCodeHandler = new VerificationHandler() {
-        @Override
-        public void onSuccess(CognitoUserCodeDeliveryDetails cognitoUserCodeDeliveryDetails) {
-            showDialogMessage("Confirmation code sent.", "Code sent to " + cognitoUserCodeDeliveryDetails.getDestination() + " via " + cognitoUserCodeDeliveryDetails.getDeliveryMedium() + ".", false);
-        }
-
-        @Override
-        public void onFailure(Exception exception) {
-            showDialogMessage("Confirmation code request has failed", AppHelper.formatException(exception), false);
-        }
-    };
+public class ConfrimHome extends AppCompatActivity {
     private ProgressDialog waitDialog;
+    private AlertDialog userDialog;
+    //verification code
     GenericHandler confHandler = new GenericHandler() {
         @Override
         public void onSuccess() {
@@ -51,21 +36,30 @@ public class Confirmd  extends AppCompatActivity {
             showDialogMessage("Confirmation code request has failed", AppHelper.formatException(exception), false);
         }
     };
+    //resend code
+    VerificationHandler resendConfCodeHandler = new VerificationHandler() {
+        @Override
+        public void onSuccess(CognitoUserCodeDeliveryDetails cognitoUserCodeDeliveryDetails) {
+            showDialogMessage("Confirmation code sent.", "Code sent to " + cognitoUserCodeDeliveryDetails.getDestination() + " via " + cognitoUserCodeDeliveryDetails.getDeliveryMedium() + ".", false);
+        }
+
+        @Override
+        public void onFailure(Exception exception) {
+            showDialogMessage("Confirmation code request has failed", AppHelper.formatException(exception), false);
+        }
+    };
+    private Button con;
+    private EditText code, email;
+    private TextView resend;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_corfin);
-        con = findViewById(R.id.bt_con);
         code = findViewById(R.id.et_code);
-        resend = findViewById(R.id.tv_confrim);
+        email = findViewById(R.id.et_useremail);
+        resend = findViewById(R.id.tv_recode);
+        con = findViewById(R.id.bt_con);
 
-        resend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                reqConfCode();
-            }
-        });
-        //凡回見
         ImageView backic = findViewById(R.id.back);
         backic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,59 +68,60 @@ public class Confirmd  extends AppCompatActivity {
             }
         });
 
-        //userDialog.setCancelable(false);
+        email.setVisibility(View.VISIBLE);
+
         con.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showWaitDialog("Confirming...");
-                AppHelper.getPool().getUser(AppHelper.userid).confirmSignUpInBackground(code.getText().toString(), true, confHandler);
+                if (!email.getText().toString().isEmpty() && email.getText().toString() != "" && !code.getText().toString().isEmpty()) {
+                    String em = email.getText().toString();
+                    em = em.replace("@", "-at-");
+                    showWaitDialog("Confirming...");
+                    AppHelper.getPool().getUser(em).confirmSignUpInBackground(code.getText().toString(), true, confHandler);
+
+                }
+            }
+        });
+
+        resend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String em = email.getText().toString();
+                em = em.replace("@", "-at-");
+                AppHelper.getPool().getUser(em).resendConfirmationCodeInBackground(resendConfCodeHandler);
             }
         });
     }
 
     private void showWaitDialog(String message) {
-        closeWaitDialog();
-        waitDialog = new ProgressDialog(this);
-        waitDialog.setTitle(message);
-        waitDialog.show();
-    }
-
-    private void closeWaitDialog() {
         try {
             waitDialog.dismiss();
         } catch (Exception e) {
             //
         }
+        waitDialog = new ProgressDialog(this);
+        waitDialog.setTitle(message);
+        waitDialog.show();
     }
 
     private void showDialogMessage(String title, String body, final boolean exitActivity) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
         builder.setTitle(title).setMessage(body).setNeutralButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 try {
                     userDialog.dismiss();
                     if (exitActivity) {
-                        exit();
+                        finish();
                     }
                 } catch (Exception e) {
-                    exit();
+                    finish();
                 }
             }
         });
         userDialog = builder.create();
         userDialog.show();
-    }
-
-    private void exit() {
-        Intent it = new Intent();
-        it.setClass(Confirmd.this, Sign_Rerister.class);
-        startActivity(it);
-        finish();
-    }
-
-    private void reqConfCode() {
-        AppHelper.getPool().getUser(AppHelper.userid).resendConfirmationCodeInBackground(resendConfCodeHandler);
     }
 
 }

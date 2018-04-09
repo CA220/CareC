@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ForgotPasswordContinuation;
@@ -57,6 +58,16 @@ public class ForgotPassword extends AppCompatActivity {
         et_pwds = findViewById(R.id.et_pwds);
         ed_code = findViewById(R.id.et_code);
         ed_email = findViewById(R.id.et_Mail);
+
+        //凡回見
+        ImageView backic = findViewById(R.id.back);
+        backic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
         bt_OK = findViewById(R.id.ForgotPassword_button);
         bt_OK.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -22,7 +22,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:button="@null"
-
+                android:checked="false"
                 android:drawableTop="@drawable/ic_home_black_24dp"
                 android:gravity="center"
                 android:paddingBottom="5dp"
