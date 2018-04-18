@@ -28,8 +28,11 @@ import com.amazonaws.mobileconnectors.dynamodbv2.document.Table;
 import com.amazonaws.mobileconnectors.iot.AWSIotKeystoreHelper;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.iot.model.AttachPrincipalPolicyRequest;
+import com.amazonaws.services.iot.model.AttachThingPrincipalRequest;
 import com.amazonaws.services.iot.model.CreateCertificateFromCsrRequest;
 import com.amazonaws.services.iot.model.CreateCertificateFromCsrResult;
+import com.amazonaws.services.iot.model.CreateThingRequest;
+import com.amazonaws.services.iot.model.CreateThingResult;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -137,6 +140,10 @@ public class Mainpage extends AppCompatActivity {
                 }
             }
         });
+
+        //helppage
+
+
 
         //IOT連接
         AppHelper.iotcreate();
@@ -363,7 +370,12 @@ private String keyandcert()
     policyAttachRequest.setPolicyName(AWS_IOT_POLICY_NAME);
     policyAttachRequest.setPrincipal(result.getCertificateArn());
     AppHelper.iotClient.attachPrincipalPolicy(policyAttachRequest);
-
+        CreateThingRequest ct = new CreateThingRequest().withThingName("Tw0002");
+        CreateThingResult cresult = AppHelper.iotClient.createThing(ct);
+        AttachThingPrincipalRequest attachThingPrincipalRequest = new AttachThingPrincipalRequest();
+        attachThingPrincipalRequest.setThingName("Tw0002");
+        attachThingPrincipalRequest.setPrincipal(result.getCertificateArn());
+        AppHelper.iotClient.attachThingPrincipal(attachThingPrincipalRequest);
     FileWriter fw = new FileWriter(getFilesDir()+"/ac8cert.pem", false);
     BufferedWriter bw = new BufferedWriter(fw);
     bw.write(keycert[1]);

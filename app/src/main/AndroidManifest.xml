@@ -16,7 +16,7 @@
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
-
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -24,11 +24,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-      <!--  android:largeHeap="true"//強制加大APP記憶空間 -->
 
-        <service android:name=".backgroundservice" />
 
-        <activity android:name=".Sign_Rerister">
+        <activity
+            android:name=".Sign_Rerister"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,22 +37,74 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Login" />
-        <activity android:name=".Rerister" />
-        <activity android:name=".Confirmd" />
-        <activity android:name=".Mainpage" />
-        <activity android:name=".QR"/>
-        <activity android:name=".wifi"/>
-        <activity android:name=".setDevice"/>
-        <activity android:name=".decive_data"/>
-        <activity android:name=".ForgotPassword"/>
-        <activity android:name=".success"/>
-        <activity android:name=".my_profile"/>
-        <activity android:name=".username"/>
-        <activity android:name=".birthday"/>
-        <activity android:name=".district"/>
-        <activity android:name=".notifications"/>
-        <activity android:name=".ConfrimHome" />
-        </application>
+        <activity
+            android:name=".Login"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Rerister"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Confirmd"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Mainpage"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".QR"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".wifi"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".setDevice"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".decive_data"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ForgotPassword"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".success"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".my_profile"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".username"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".birthday"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".district"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".notifications"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ConfrimHome"
+            android:screenOrientation="portrait" />
+        <!--Service-->
+        <service android:name=".backgroundservice" />
+        <service android:name=".FcmInstancelIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".FcmMessageService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+    </application>
+    <!--Notification-->
+    <meta-data
+        android:name="com.google.firebase.messaging.default_notification_icon"
+        android:resource="@drawable/ic_add_black_24dp" />
+
+    <meta-data
+        android:name="com.google.firebase.messaging.default_notification_color"
+        android:resource="@color/colorAccent" />
 
     </manifest>

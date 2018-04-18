@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "659579542655",
+    "firebase_url": "https://androidpush-320f1.firebaseio.com",
+    "project_id": "androidpush-320f1",
+    "storage_bucket": "androidpush-320f1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:659579542655:android:fdf44a59abd19f81",
+        "android_client_info": {
+          "package_name": "com.guineatech.CareC"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "659579542655-2cmn9aof3si1ll95npe1rtuoj1eu31j6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDV6qOzu05NBXslT9yvz0PZyhA0I_IVX-k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

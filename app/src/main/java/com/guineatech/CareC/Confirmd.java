@@ -1,12 +1,15 @@
 package com.guineatech.CareC;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -57,7 +60,7 @@ public class Confirmd  extends AppCompatActivity {
         setContentView(R.layout.activity_corfin);
         con = findViewById(R.id.bt_con);
         code = findViewById(R.id.et_code);
-        resend = findViewById(R.id.tv_confrim);
+        resend = findViewById(R.id.tv_recode);
 
         resend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,4 +132,25 @@ public class Confirmd  extends AppCompatActivity {
         AppHelper.getPool().getUser(AppHelper.userid).resendConfirmationCodeInBackground(resendConfCodeHandler);
     }
 
+
+    //點空白取消鍵盤
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (HideInputUtils.isShouldHideInput(v, ev)) {
+
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+            return super.dispatchTouchEvent(ev);
+        }
+        // 必不可少，否则所有的组件都不会有TouchEvent了
+        if (getWindow().superDispatchTouchEvent(ev)) {
+            return true;
+        }
+        return onTouchEvent(ev);
+    }
 }

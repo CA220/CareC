@@ -94,6 +94,7 @@ public class Sign_Rerister extends AppCompatActivity {
                 Intent it = new Intent();
                 it.setClass(Sign_Rerister.this,Mainpage.class);
                 startActivity(it);
+                finish();
 
             }
         }

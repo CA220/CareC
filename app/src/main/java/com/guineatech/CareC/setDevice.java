@@ -41,7 +41,7 @@ Button btsub;
               Intent intent = new Intent(setDevice.this, Mainpage.class);
               intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
               startActivity(intent);
-
+              finish();
           }
       });
         new DBadddata().execute();

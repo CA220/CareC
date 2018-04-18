@@ -1,13 +1,16 @@
 package com.guineatech.CareC;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,7 +21,6 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationDetails;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ForgotPasswordContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler;
 
@@ -73,7 +75,7 @@ public class Login extends AppCompatActivity {
 
         }
     };
-    private ForgotPasswordContinuation forgotPasswordContinuation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +101,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent it = new Intent();
+                it.putExtra("Email", ed_mail.getText().toString());
                 it.setClass(Login.this, ForgotPassword.class);
                 startActivity(it);
             }
@@ -126,28 +129,7 @@ public class Login extends AppCompatActivity {
 
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode)
-        {
-            case 3:
-                // Forgot password
-                if(resultCode == RESULT_OK) {
-                    String newPass = data.getStringExtra("newPass");
-                    String code = data.getStringExtra("code");
-                    if (newPass != null && code != null) {
-                        if (!newPass.isEmpty() && !code.isEmpty()) {
-                            showWaitDialog("Setting new password...");
-                            forgotPasswordContinuation.setPassword(newPass);
-                            forgotPasswordContinuation.setVerificationCode(code);
-                            forgotPasswordContinuation.continueTask();
-                        }
-                    }
-                }
-                break;
-        }
-    }
 
     private void getUserAuthentication(AuthenticationContinuation continuation, String username)
     {
@@ -196,10 +178,32 @@ public class Login extends AppCompatActivity {
 
     private void exhere()
     {
-        Intent it =new Intent();
-        it.setClass(Login.this,Mainpage.class);
+        Intent it = new Intent(Login.this, Mainpage.class);
+        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(it);
-
         finish();
+
+    }
+
+
+    //點空白取消鍵盤
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (HideInputUtils.isShouldHideInput(v, ev)) {
+
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+            return super.dispatchTouchEvent(ev);
+        }
+        // 必不可少，否则所有的组件都不会有TouchEvent了
+        if (getWindow().superDispatchTouchEvent(ev)) {
+            return true;
+        }
+        return onTouchEvent(ev);
     }
 }
