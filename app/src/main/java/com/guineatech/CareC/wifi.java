@@ -9,12 +9,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -52,7 +54,8 @@ public class wifi extends AppCompatActivity {
     private AlertDialog userDialog;
     private ProgressDialog waitDialog;
     private EditText ed_pwd;
-
+    private  LocationManager status;
+    private WifiAdmin wifiAdmin;
     //開GPS
     public static final void openGPS(Context context) {
         Intent GPSIntent = new Intent();
@@ -86,56 +89,58 @@ public class wifi extends AppCompatActivity {
         btstep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent it = new Intent();
-                it.putExtra("deviceid", bcode);
-                it.putExtra("nickname", nickname.getText().toString());
-                Log.e("log", nickname.getText().toString());
-                it.setClass(wifi.this, setDevice.class);
-                startActivity(it);
-                //連上Device
-                /*
                 wifissid=spinnerWifis.getSelectedItem().toString();
                 wifipwd=ed_pwd.getText().toString();
-               Adapter allwifi= spinnerWifis.getAdapter();
-                int c=allwifi.getCount();
 
-                boolean checkf=false;
-                for(int v =0 ;v<c;) {
-                    Log.e("log"," "+bcode);
-                    Log.e("log"," "+allwifi.getItem(v).toString());
-                    if(bcode.equals(allwifi.getItem(v).toString())){
-                        int ope=0;
-                       while (Connect(bcode,"12345678",WifiCipherType.WIFICIPHER_WPA))
-                       {
-Log.e("log",ope+"");
-ope++;
-                           try {
-// 为了避免程序一直while循环，让它睡个100毫秒在检测……..
-                               Thread.currentThread();
-                               Thread.sleep(100);
-                           } catch (InterruptedException ie)
-                           {
-                               Log.e("log","time out");
-                               checkf=false;
-                               break;
-                           }
-                       }
-                       checkf=true;
-                    break;
-                    }
-                    v++;
-                }
-                if(checkf)
+               if(wifiAdmin.addNetwork(wifiAdmin.CreateWifiInfo(bcode, "12345678", 3))){
                     new  conndecives().execute();
-                else
+                   Intent it = new Intent();
+                   it.putExtra("deviceid", bcode);
+                   it.putExtra("nickname", nickname.getText().toString());
+                   Log.e("log", nickname.getText().toString());
+                   it.setClass(wifi.this, setDevice.class);
+                   startActivity(it);
+               } else {
+                   showDialogMessage("Wifi","Connect Fail Please Check your wifi pwd",0);
+               }
 
-                Log.e("log","Can't no find Device\nPlease Check your Device switch to Seting Mode");
-            */
+
             }
         });
-        openGPS(context);
-        IsEnable();
-        scan();
+       status = (LocationManager) (this.getSystemService(Context.LOCATION_SERVICE));
+        if (status.isProviderEnabled(LocationManager.GPS_PROVIDER) || status.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            //如果GPS或網路定位開啟，呼叫locationServiceInitial()更新位置
+            showDialogMessage("Location","已開啟", 0);
+            wifilist();
+
+        } else {
+            Toast.makeText(this, "請開啟定位服務", Toast.LENGTH_LONG).show();
+            showDialogMessage("Location","請開啟定位服務", 2);
+        }
+    }
+
+    protected void onResume() {
+        super.onResume();
+        if (status.isProviderEnabled(LocationManager.GPS_PROVIDER) || status.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            //如果GPS或網路定位開啟，呼叫locationServiceInitial()更新位置
+            showDialogMessage("Location","已開啟", 0);
+            wifilist();
+        } else {
+            Toast.makeText(this, "請開啟定位服務", Toast.LENGTH_LONG).show();
+            showDialogMessage("Location","請開啟定位服務", 2);
+
+        }
+    }
+
+    private void wifilist(){
+        wifiAdmin = new WifiAdmin(this);
+        wifiAdmin.openWifi();
+        wifiAdmin.startScan();
+        wifiAdmin.getlist();
+        ArrayAdapter<String> ap=new ArrayAdapter<String>(context,android.R.layout.simple_spinner_dropdown_item,wifiAdmin.getWifiListstring());
+        spinnerWifis.setAdapter(ap);
+
+
     }
 
 //跳出的視窗
@@ -150,6 +155,8 @@ ope++;
                        Intent it=new Intent();
                        it.setClass(wifi.this,setDevice.class);
                        startActivity(it);
+                   case 2:
+                       startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));	//開啟設定頁面 finish();
                    default:
 
                }
@@ -162,169 +169,9 @@ ope++;
         userDialog.show();
     }
 
-    private void IsEnable(){
-        //首先取得Wi-Fi服務控制Manager
-        wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-
-        if(wifiManager.isWifiEnabled()){
-
-        }else {
-
-            //wifiManager.setWifiEnabled(true);
-            wifiManager.setWifiEnabled(true);
-            Toast.makeText(wifi.this, "Wi-Fi開啟中", Toast.LENGTH_SHORT).show();
-        }
 
 
-    }
 
-    //搜尋WIFI
-    private void scan() {
-        // Register the Receiver in some part os fragment...
-        registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                wifiScanReceive();
-            }
-        }, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-
-        wifiManager.startScan();
-
-        // Inside the receiver:
-    }
-
-    private void wifiScanReceive(){
-        // the result.size() is 0 after update to Android v6.0, same code working in older devices.
-        List<ScanResult> scanResultList =  wifiManager.getScanResults();
-
-        int size = scanResultList.size();
-        final List<String> dataList = new ArrayList<String>(size);
-        Toast.makeText(context,"scan result :" + size,Toast.LENGTH_SHORT).show();
-
-         for(int i = 0 ; i <size  ; i++ )
-        {
-            //手機目前周圍的Wi-Fi環境
-            String SSID  = scanResultList.get(i).SSID ;
-          //  int LEVEL = scanResultList.get(i).level;
-            String item = String.format(SSID);
-            Log.d("wifi",item);
-            dataList.add(item);
-        }
-
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ArrayAdapter adapter = new ArrayAdapter(context,android.R.layout.simple_spinner_item,dataList);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinnerWifis.setAdapter(adapter);
-            }
-        });
-    }
-
-    //有連過的wifi
-    public boolean Connect(WifiConfiguration wf) {
-        IsEnable();
-// 状态变成WIFI_STATE_ENABLED的时候才能执行下面的语句，即当状态为WIFI_STATE_ENABLING时，让程序在while里面跑
-        while (wifiManager.getWifiState() == WifiManager.WIFI_STATE_ENABLING) {
-            try {
-// 为了避免程序一直while循环，让它睡个100毫秒在检测……
-                Thread.currentThread();
-                Thread.sleep(100);
-            } catch (InterruptedException ie) {
-            }
-        }
-        boolean bRet = wifiManager.enableNetwork(wf.networkId, true);
-        wifiManager.saveConfiguration();
-        return bRet;
-    }
-    //玫璉過的wifi
-    public boolean Connect(String SSID, String Password, WifiCipherType Type) {
-        IsEnable();
-// 状态变成WIFI_STATE_ENABLED的时候才能执行下面的语句
-        while (wifiManager.getWifiState() == WifiManager.WIFI_STATE_ENABLING) {
-            try {
-// 为了避免程序一直while循环，让它睡个100毫秒在检测……
-                Thread.currentThread();
-                Thread.sleep(100);
-            } catch (InterruptedException ie) {
-            }
-        }
-
-        WifiConfiguration wifiConfig =this
-                .CreateWifiInfo(SSID, Password, Type);
-        int netID = wifiManager.addNetwork(wifiConfig);
-        boolean bRet = wifiManager.enableNetwork(netID, true);
-        wifiManager.saveConfiguration();
-        return bRet;
-    }
-
-    //玫璉過的wifi
-    private WifiConfiguration CreateWifiInfo(String SSID, String Password,
-                                             WifiCipherType Type) {
-
-        WifiConfiguration config = new WifiConfiguration();
-
-        config.allowedAuthAlgorithms.clear();
-        config.allowedGroupCiphers.clear();
-        config.allowedKeyManagement.clear();
-        config.allowedPairwiseCiphers.clear();
-        config.allowedProtocols.clear();
-
-        config.SSID = "\"" + SSID + "\"";
-
-        if (Type == WifiCipherType.WIFICIPHER_NOPASS) {
-            config.wepKeys[0] = "";
-
-            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
-
-            config.wepTxKeyIndex = 0;
-        }
-        if (Type == WifiCipherType.WIFICIPHER_WEP) {
-
-            config.preSharedKey = "\"" + Password + "\"";
-            config.hiddenSSID = true;
-
-            config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.SHARED);
-
-            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
-            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
-            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
-            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP104);
-
-            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
-
-            config.wepTxKeyIndex = 0;
-        }
-        if (Type == WifiCipherType.WIFICIPHER_WPA) {
-
-            config.preSharedKey = "\"" + Password + "\"";
-            config.hiddenSSID = true;
-
-            config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
-
-            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
-            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
-
-            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
-
-            config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
-            config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
-
-            config.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
-            config.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
-
-            config.status = WifiConfiguration.Status.ENABLED;
-        } else {
-            return null;
-        }
-        return config;
-    }
-
-    //參數
-    public enum WifiCipherType {
-        WIFICIPHER_WEP, WIFICIPHER_WPA, WIFICIPHER_NOPASS, WIFICIPHER_INVALID
-    }
 
 //連到裝置
     public class conndecives extends AsyncTask<Void,Void,String>
