@@ -12,7 +12,7 @@ public class notifications extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.meun_notifications);
+
 
     }
 }

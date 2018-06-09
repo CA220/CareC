@@ -1,19 +1,12 @@
 package com.guineatech.CareC;
 
 
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
-import android.net.Uri;
-import android.net.wifi.ScanResult;
-import android.net.wifi.WifiConfiguration;
-import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -21,11 +14,14 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -35,8 +31,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 
@@ -44,11 +38,11 @@ import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 
 public class wifi extends AppCompatActivity {
 
-    EditText nickname;
+
     private Context context = this;
-    private WifiManager wifiManager;
+
     private Spinner spinnerWifis;
-    private String bcode;
+    private String bcode, name;
     private Button btstep;
     private String wifissid="",wifipwd="",endpoint=AppHelper.CUSTOMER_SPECIFIC_ENDPOINT;
     private AlertDialog userDialog;
@@ -56,53 +50,47 @@ public class wifi extends AppCompatActivity {
     private EditText ed_pwd;
     private  LocationManager status;
     private WifiAdmin wifiAdmin;
-    //開GPS
-    public static final void openGPS(Context context) {
-        Intent GPSIntent = new Intent();
-        GPSIntent.setClassName("com.android.settings",
-                "com.android.settings.widget.SettingsAppWidgetProvider");
-        GPSIntent.addCategory("android.intent.category.ALTERNATIVE");
-        GPSIntent.setData(Uri.parse("custom:3"));
-        try {
-            PendingIntent.getBroadcast(context, 0, GPSIntent, 0).send();
-        } catch (PendingIntent.CanceledException e) {
-            e.printStackTrace();
-        }
-    }
+    private TextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wifi);
+        setContentView(R.layout.confirm_mattress);
         Intent it=this.getIntent();
          bcode=it.getStringExtra("bcode");
-        spinnerWifis = findViewById(R.id.spinner);
-        ed_pwd=findViewById(R.id.edit_pwd);
-        btstep = findViewById(R.id.bt_step);
+        name = it.getStringExtra("nickname");
+        title = findViewById(R.id.tv_title2);
+        title.setText("ID:" + bcode);
+
+        spinnerWifis = findViewById(R.id.sp_wifi);
+        ed_pwd = findViewById(R.id.et_conpasswd);
+        btstep = findViewById(R.id.bt_confirm);
         if (ActivityCompat.checkSelfPermission(wifi.this, ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             ActivityCompat.requestPermissions(wifi.this,new String[]{ACCESS_COARSE_LOCATION},1);
         }
-        nickname = findViewById(R.id.edit_nickname);
+
 
 //Next step
         btstep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                wifissid=spinnerWifis.getSelectedItem().toString();
-                wifipwd=ed_pwd.getText().toString();
+                {
+                    wifissid = spinnerWifis.getSelectedItem().toString();
+                    wifipwd = ed_pwd.getText().toString();
 
-               if(wifiAdmin.addNetwork(wifiAdmin.CreateWifiInfo(bcode, "12345678", 3))){
-                    new  conndecives().execute();
-                   Intent it = new Intent();
-                   it.putExtra("deviceid", bcode);
-                   it.putExtra("nickname", nickname.getText().toString());
-                   Log.e("log", nickname.getText().toString());
-                   it.setClass(wifi.this, setDevice.class);
-                   startActivity(it);
-               } else {
-                   showDialogMessage("Wifi","Connect Fail Please Check your wifi pwd",0);
-               }
+
+                    // new  conndecives().execute();
+                    Intent it = new Intent();
+                    it.putExtra("deviceid", bcode);
+                    it.putExtra("nickname", name);
+                    it.putExtra("ssid", wifissid);
+                    it.putExtra("pwd", wifipwd);
+                    //Log.e("log", nickname.getText().toString());
+                    it.setClass(wifi.this, setDevice.class);
+                    startActivity(it);
+                    finish();
+                }
 
 
             }
@@ -110,7 +98,7 @@ public class wifi extends AppCompatActivity {
        status = (LocationManager) (this.getSystemService(Context.LOCATION_SERVICE));
         if (status.isProviderEnabled(LocationManager.GPS_PROVIDER) || status.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             //如果GPS或網路定位開啟，呼叫locationServiceInitial()更新位置
-            showDialogMessage("Location","已開啟", 0);
+            // showDialogMessage("Location","已開啟", 0);
             wifilist();
 
         } else {
@@ -151,10 +139,6 @@ public class wifi extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                switch (Whatis)
                {
-                   case 3:
-                       Intent it=new Intent();
-                       it.setClass(wifi.this,setDevice.class);
-                       startActivity(it);
                    case 2:
                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));	//開啟設定頁面 finish();
                    default:
@@ -371,7 +355,26 @@ public class wifi extends AppCompatActivity {
     }
 
 
-    //建立金鑰
+    //點空白取消鍵盤
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (HideInputUtils.isShouldHideInput(v, ev)) {
+
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+            return super.dispatchTouchEvent(ev);
+        }
+        // 必不可少，否则所有的组件都不会有TouchEvent了
+        if (getWindow().superDispatchTouchEvent(ev)) {
+            return true;
+        }
+        return onTouchEvent(ev);
+    }
 
 
 

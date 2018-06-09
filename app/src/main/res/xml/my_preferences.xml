@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Event Notification">
+        <Preference
+            android:key="ref_key_mute"
+            android:summary="Hit 3 Times"
+            android:title="Call Help"
+            android:widgetLayout="@layout/pref_reset_bd_button" />
+
+        <SwitchPreference
+            android:key="ref_key_ringtone"
+            android:summary="Send the notice alart when user after a sleep period"
+            android:title="Awake Notice" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Abnormal Behavior Notification">
+        <SwitchPreference
+            android:key="ref_key_name"
+            android:summary="Leave Bed 10 mins no return"
+            android:title="Leave Bed" />
+        <SwitchPreference
+            android:key="ref_key_name"
+            android:summary="Over 20 mins no movement"
+            android:title="Long Time No Movement" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Abnormal Physiological Notification">
+        <SwitchPreference
+            android:key="ref_key_sync"
+            android:summary="Deviation 10% Normal Respiration Rate Range"
+            android:title="Abnormal Heart Beat Rate" />
+        <SwitchPreference
+            android:key="ref_key_sync"
+            android:summary="Deviation 10% Normal Respiration Rate Range"
+            android:title="Abnormal Respiration Rate" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

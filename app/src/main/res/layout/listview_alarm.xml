@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="128dp"
+    tools:context="com.example.oao.carebed.alarm">
+
+    <ImageView
+        android:id="@+id/imageView19"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="23dp"
+        android:layout_marginTop="7dp"
+        app:srcCompat="@drawable/more_xxxhdpi" />
+
+    <ImageView
+        android:id="@+id/imageView17"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/imageView19"
+        android:layout_gravity="center"
+        android:layout_marginStart="33dp"
+        android:layout_weight="1"
+        app:srcCompat="@mipmap/ic_launcher_round" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/imageView17"
+        android:layout_below="@+id/imageView17"
+        android:layout_marginTop="11dp"
+        android:layout_weight="1"
+        android:text="Joenee"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/imageView17"
+        android:layout_marginStart="45dp"
+        android:layout_toEndOf="@+id/textView17"
+        android:text="Caregiver" />
+
+    <ImageView
+        android:id="@+id/imageView11"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignEnd="@+id/textView5"
+        android:layout_alignTop="@+id/switch3"
+        app:srcCompat="@drawable/caregiver_xxxhdpi" />
+
+    <ImageView
+        android:id="@+id/imageView27"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/textView5"
+        android:layout_marginStart="28dp"
+        android:layout_toEndOf="@+id/textView5"
+        app:srcCompat="@drawable/bell_xxxhdpi" />
+
+    <Switch
+        android:id="@+id/switch3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imageView17"
+        android:layout_alignEnd="@+id/imageView19" />
+
+</RelativeLayout>

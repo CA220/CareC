@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+
+    <ImageView
+        android:id="@+id/iv_topbg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentTop="true"
+        android:adjustViewBounds="true"
+        app:srcCompat="@drawable/bg_xxxhdpi" />
+
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_below="@+id/iv_back"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp"
+        app:srcCompat="@drawable/logo_xxxhdpi" />
+
+    <Button
+        android:id="@+id/bt_ris"
+        android:layout_width="240dp"
+        android:layout_height="40dp"
+
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="120dp"
+        android:background="@drawable/button_xxxhdpi"
+        android:text="Already have an account ?"
+        android:textColor="@android:color/white" />
+
+    <Button
+        android:id="@+id/bt_sign"
+        android:layout_width="240dp"
+        android:layout_height="40dp"
+        android:layout_alignStart="@+id/bt_ris"
+        android:layout_alignTop="@+id/bt_ris"
+        android:layout_marginTop="74dp"
+        android:background="@drawable/button_xxxhdpi"
+        android:text="Create an new account"
+        android:textColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/tv_logoname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="23dp"
+        android:text="Night’s watch"
+        android:textColor="@android:color/white"
+        android:textSize="24sp" />
+
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="13dp"
+        app:srcCompat="@drawable/close_xxxhdpi" />
+
+</RelativeLayout>

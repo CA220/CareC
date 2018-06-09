@@ -7,7 +7,7 @@ import android.widget.EditText;
 /**
  * Created by CAHans on 2018/4/16.
  */
-
+//點空白消除鍵盤
 public class HideInputUtils {
     public static boolean isShouldHideInput(View v, MotionEvent event) {
         if (v != null && (v instanceof EditText)) {

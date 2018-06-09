@@ -1,77 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/llBorder"
-    android:layout_width="fill_parent"
-
-    android:layout_height="128dp"
-    android:descendantFocusability="blocksDescendants">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rt_item"
+    android:layout_width="match_parent"
+    android:layout_height="142dp"
+    tools:context="com.example.oao.carebed.listview_item">
 
     <TextView
-        android:id="@+id/cht"
+        android:id="@+id/tv_cht"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_above="@+id/iv_userph"
+
+        android:layout_marginEnd="12dp"
+        android:layout_toStartOf="@+id/tv_user"
+        android:layout_weight="1"
+        android:text="owner-"
+
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tv_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/iv_line"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="43dp"
+        android:layout_weight="1"
+        android:text="Jone"
+        android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/iv_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_cht"
+        android:layout_marginStart="52dp"
+        android:layout_toEndOf="@+id/iv_userph"
+        app:srcCompat="@drawable/ownerline_xxxhdpi" />
+
+    <ImageView
+        android:id="@+id/iv_userph"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_below="@+id/iv_caregiver"
+
+        android:layout_marginBottom="24dp"
         android:layout_marginLeft="24dp"
-        android:layout_marginTop="8dp"
-        android:text="Ower" />
-
-    <TextView
-        android:id="@+id/user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/peo"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        android:text="John" />
+        android:layout_weight="1"
+        app:srcCompat="@mipmap/ic_launcher_round" />
 
     <ImageView
-        android:id="@+id/peo"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-
-        android:layout_below="@+id/cht"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="8dp" />
-
-    <ImageView
-        android:id="@+id/bed"
-        android:layout_width="80dp"
-        android:layout_height="40dp"
-
-        android:layout_alignBottom="@id/peo"
-        android:layout_marginRight="8dp"
-        android:layout_toRightOf="@id/peo"
-
-
-        />
+        android:id="@+id/iv_bed"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignStart="@+id/iv_line"
+        android:layout_below="@+id/iv_line"
+        android:layout_weight="1"
+        app:srcCompat="@drawable/ic_bed"
+        tools:ignore="VectorDrawableCompat" />
 
     <ImageView
-        android:id="@+id/heart"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-
-        android:layout_alignBottom="@id/bed"
-        android:layout_marginRight="8dp"
-        android:layout_toRightOf="@id/bed" />
-
-    <ImageView
-        android:id="@+id/brd"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-
-        android:layout_alignBottom="@id/heart"
-        android:layout_marginRight="8dp"
-        android:layout_toRightOf="@id/heart" />
+        android:id="@+id/iv_heart"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/iv_line"
+        android:layout_marginStart="16dp"
+        android:layout_toRightOf="@+id/iv_bed"
+        android:layout_weight="1"
+        app:srcCompat="@drawable/heart_xxxhdpi" />
 
     <ImageView
-        android:id="@+id/sleep"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:id="@+id/iv_breathe"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/iv_line"
+        android:layout_marginStart="16dp"
+        android:layout_toRightOf="@+id/iv_heart"
+        android:layout_weight="1"
+        app:srcCompat="@drawable/ic_breathe"
+        tools:ignore="VectorDrawableCompat" />
 
-        android:layout_alignBottom="@id/brd"
-        android:layout_marginRight="8dp"
-        android:layout_toRightOf="@id/brd" />
+    <ImageView
+        android:id="@+id/iv_caregiver"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
 
+        app:srcCompat="@drawable/defend_xxxhdpi" />
+
+    <ImageView
+        android:id="@+id/iv_owner"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignTop="@+id/iv_caregiver"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/iv_caregiver"
+        app:srcCompat="@drawable/king_xxxhdpi" />
+
+    <ImageView
+        android:id="@+id/iv_inbed"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignBottom="@+id/iv_owner"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@+id/iv_owner"
+        app:srcCompat="@drawable/exit_xxxhdpi" />
 
 </RelativeLayout>

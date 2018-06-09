@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference android:layout="@layout/preference_toolbar" />
+    <Preference android:layout="@layout/acount_main" />
+    <PreferenceCategory android:title="Basic Profile">
+        <EditTextPreference
+
+            android:icon="@drawable/user_xxxhdpi"
+            android:key="name"
+            android:summary="Name"
+            android:title="Name" />
+        <EditTextPreference
+            android:icon="@drawable/email_xxxhdpi"
+            android:key="email"
+            android:summary="email"
+            android:title="Email" />
+        <EditTextPreference
+            android:icon="@drawable/phone_xxxhdpi"
+            android:key="phone"
+            android:summary="phone number"
+            android:title="Phone" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Change Password">
+        <Preference
+
+            android:icon="@drawable/passwd_xxxhdpi"
+            android:title="Enter New Password" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Accessibility">
+        <Preference
+
+            android:title=" " />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="About">
+        <Preference
+
+            android:icon="@drawable/help_xxxhdpi"
+            android:title="Help" />
+        <Preference
+
+            android:icon="@drawable/qr_xxxhdpi"
+            android:title="Show QR Code" />
+        <Preference
+
+            android:icon="@drawable/terms_xxxhdpi"
+            android:title="Terms of Service" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Logout">
+
+
+        <Preference
+
+
+            android:key="logout"
+            android:widgetLayout="@layout/preference_logout" />
+
+    </PreferenceCategory>
+</PreferenceScreen>

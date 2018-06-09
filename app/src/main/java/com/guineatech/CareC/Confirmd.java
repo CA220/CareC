@@ -57,10 +57,10 @@ public class Confirmd  extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_corfin);
-        con = findViewById(R.id.bt_con);
-        code = findViewById(R.id.et_code);
-        resend = findViewById(R.id.tv_recode);
+        setContentView(R.layout.confirm_code);
+        con = findViewById(R.id.bt_confirm);
+        code = findViewById(R.id.et_concode);
+        resend = findViewById(R.id.tvb_resendcode);
 
         resend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +69,7 @@ public class Confirmd  extends AppCompatActivity {
             }
         });
         //凡回見
-        ImageView backic = findViewById(R.id.back);
+        ImageView backic = findViewById(R.id.iv_back);
         backic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

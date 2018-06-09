@@ -35,7 +35,7 @@ public class AppHelper {
     private static CognitoUserPool userPool;
     private static String user;
     private static CognitoUserSession currSession;
-
+    public static String serial, AWS_IOT_POLICY_NAME = "tre-Policy";
     public static CognitoUserPool getPool() {
         return userPool;
     }

@@ -11,15 +11,11 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.amazonaws.mobileconnectors.iot.AWSIotKeystoreHelper;
-import com.amazonaws.mobileconnectors.iot.AWSIotMqttClientStatusCallback;
 import com.amazonaws.mobileconnectors.iot.AWSIotMqttNewMessageCallback;
 import com.amazonaws.mobileconnectors.iot.AWSIotMqttQos;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.security.KeyStore;
 
 
 //繼承android.app.Service
@@ -81,7 +77,7 @@ public class backgroundservice extends Service {
         } catch (Exception e) {
             Log.e("log", e.toString());
         }
-
+/*
        KeyStore clientKeyStore= AWSIotKeystoreHelper.getIotKeystore(Mainpage.serial, getFilesDir().getPath(),Mainpage.serial,Mainpage.serial);
         AppHelper.mqttManager.connect(clientKeyStore,new AWSIotMqttClientStatusCallback() {
             @Override
@@ -122,7 +118,7 @@ public class backgroundservice extends Service {
                 }, 1000);
 
             }
-        });
+        });*/
         super.onStart(intent, startId);
     }
 

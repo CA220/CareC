@@ -30,7 +30,7 @@ import java.util.Map;
 public class Login extends AppCompatActivity {
     TextView text_forgot;
     EditText ed_mail,ed_pwd;
-    Button  bt_ok;
+    Button bt_ok, bt_ris;
     String email,pwd;
     private AlertDialog userDialog;
     private ProgressDialog waitDialog;
@@ -80,9 +80,9 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.sign_in);
 
-        ImageView backic = findViewById(R.id.back);
+        ImageView backic = findViewById(R.id.iv_back);
         backic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,10 +92,11 @@ public class Login extends AppCompatActivity {
 
         //userDialog.setCancelable(false);
 
-        text_forgot = findViewById(R.id.text_Forgot);
-        bt_ok = findViewById(R.id.bt_Ok);
-        ed_mail = findViewById(R.id.et_Mail);
-        ed_pwd = findViewById(R.id.et_pwd);
+        text_forgot = findViewById(R.id.tvb_forgotpwd);
+        bt_ok = findViewById(R.id.bt_ris);
+        ed_mail = findViewById(R.id.et_email);
+        ed_pwd = findViewById(R.id.et_password);
+        bt_ris = findViewById(R.id.bt_sign);
 
         text_forgot.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +124,14 @@ public class Login extends AppCompatActivity {
                 AppHelper.getPool().getUser(AppHelper.userid).getSessionInBackground(authenticationHandler);
                 showWaitDialog("Login......");
 
+            }
+        });
+        bt_ris.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent it = new Intent(Login.this, Rerister.class);
+                startActivity(it);
+                finish();
             }
         });
 
@@ -178,7 +187,7 @@ public class Login extends AppCompatActivity {
 
     private void exhere()
     {
-        Intent it = new Intent(Login.this, Mainpage.class);
+        Intent it = new Intent(Login.this, Frame.class);
         it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(it);
         finish();

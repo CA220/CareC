@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAlamrbg"
+    tools:context=".wakeup_ring">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="46dp"
+        android:text="Wake up"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/ring"
+        android:layout_width="189dp"
+        android:layout_height="107dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="114dp"
+        app:srcCompat="@drawable/ring_xxxhdpi" />
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="6:00am"
+        android:textColor="@android:color/white"
+        android:textSize="36sp" />
+
+    <ImageView
+        android:id="@+id/warning"
+        android:layout_width="250dp"
+        android:layout_height="360dp"
+        android:layout_alignTop="@+id/title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/urgent_xxxhdpi" />
+
+    <Button
+        android:id="@+id/bt_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/warning"
+        android:layout_marginBottom="40dp"
+        android:text="Close" />
+
+    <Button
+        android:id="@+id/bt_do"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/warning"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp"
+
+        android:text="Do Something" />
+
+</RelativeLayout>

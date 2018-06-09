@@ -1,46 +1,30 @@
 package com.guineatech.CareC;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.amazonaws.mobileconnectors.dynamodbv2.document.Table;
-import com.amazonaws.mobileconnectors.dynamodbv2.document.datatype.Document;
-import com.amazonaws.mobileconnectors.dynamodbv2.document.datatype.Primitive;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by CAHans on 2018/1/15.
  */
 
 public class decive_data extends AppCompatActivity {
+    TextView tv_nick;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_sleeprecord);
+        tv_nick = findViewById(R.id.textView16);
+        Intent it = this.getIntent();
+        String id = it.getStringExtra("devicename");
+        tv_nick.setText(id);
+    }
+
+    /*
     TextView t0, t1, t2;
 
     String BMS = "";
@@ -177,7 +161,7 @@ public class decive_data extends AppCompatActivity {
 
                 mRecyclerView.setAdapter(ld);*/
 
-
+/*
                 try {
                     for(Document dd:documents)
                     {
@@ -258,5 +242,5 @@ public class decive_data extends AppCompatActivity {
             }
 
         }
-    }
+    }*/
 }

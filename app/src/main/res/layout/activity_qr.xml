@@ -1,63 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#DDDDDD"
-    tools:context="com.guineatech.CareC.QR">
-    <ImageView
-        android:id="@+id/back"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/ic_chevron_left_black_24dp"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
 
-        />
+    <com.journeyapps.barcodescanner.DecoratedBarcodeView
+        android:id="@+id/dbv_custom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:zxing_framing_rect_height="200dp"
+        app:zxing_framing_rect_width="200dp"
+        app:zxing_preview_scaling_strategy="fitXY"
+        app:zxing_use_texture_view="true" />
 
-    <TextView
-        android:id="@+id/tiofqr"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"
-        android:text="Scan QR"
-        android:textSize="32dp"
-        android:textStyle="bold"
-
-        />
-
-    <Button
-        android:id="@+id/QRbt"
-        android:layout_width="256dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tiofqr"
-        android:layout_centerHorizontal="true"
-
-        android:layout_marginTop="160dp"
-        android:onClick="onScanQrcode"
-        android:text="QR code"
-
-        />
-
-    <Button
-        android:id="@+id/gowifit"
-        android:layout_width="304dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="80dp"
-        android:text="Confirm" />
-
-    <EditText
-        android:id="@+id/edit_bcode"
-        android:layout_width="304dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/gowifit"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="40dp"
-        android:ems="10"
-        android:hint="Barcode"
-        android:inputType="textPersonName" />
 
 
 </RelativeLayout>

@@ -2,11 +2,13 @@ package com.guineatech.CareC;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession;
@@ -15,23 +17,24 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.Auth
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Sign_Rerister extends AppCompatActivity {
-    public static File file;
+    // public static File file;
     public SharedPreferences setting;
-    TextView text_Sign, confrim;
-    Button bt_Ris;
+    ImageView back;
+    Button bt_Ris, bt_Sign;
     String email,pwd;
     String valuestring = null;
     //登入AWS
     AuthenticationHandler authenticationHandler = new AuthenticationHandler() {
         @Override
         public void onSuccess(CognitoUserSession cognitoUserSession, CognitoDevice device) {
-
+            Log.e("First", "ons");
             String idToken = cognitoUserSession.getIdToken().getJWTToken();
             Map<String, String> logins = new HashMap<String, String>();
             logins.put("cognito-idp.us-west-2.amazonaws.com/us-west-2_Aj3frUrZo", idToken);
@@ -65,21 +68,17 @@ public class Sign_Rerister extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign__rerister);
+        setContentView(R.layout.activity_firstpage);
         AppHelper.checkpool(this);
-        confrim = findViewById(R.id.tv_confrim);
 
-        confrim.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent it = new Intent();
-                it.setClass(Sign_Rerister.this, ConfrimHome.class);
-                startActivity(it);
-            }
-        });
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+            AppHelper.serial = Build.SERIAL;
+        } else {
+            AppHelper.serial = "1234567890";
+        }
 
 //持續登入
+        FirebaseMessaging.getInstance().subscribeToTopic("CareBed_Main");
         File file = new File("/data/data/com.guineatech.CareC/shared_prefs","Data.xml");
         if(file.exists()){
             setting = getSharedPreferences("Data",0);
@@ -92,16 +91,16 @@ public class Sign_Rerister extends AppCompatActivity {
                     pwd=setting.getString("password","");
                 }
                 Intent it = new Intent();
-                it.setClass(Sign_Rerister.this,Mainpage.class);
+                it.setClass(Sign_Rerister.this, Frame.class);
                 startActivity(it);
                 finish();
 
             }
         }
 
-
-        text_Sign = findViewById(R.id.textBt_Sign);
-        bt_Ris = findViewById(R.id.bt_Ris);
+        back = findViewById(R.id.iv_back);
+        bt_Sign = findViewById(R.id.bt_ris);
+        bt_Ris = findViewById(R.id.bt_sign);
         //註冊
         bt_Ris.setOnClickListener(
                 new View.OnClickListener() {
@@ -112,7 +111,7 @@ public class Sign_Rerister extends AppCompatActivity {
                     }});
 
         //登入
-        text_Sign.setOnClickListener(new View.OnClickListener() {
+        bt_Sign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent it = new Intent();
@@ -125,6 +124,13 @@ public class Sign_Rerister extends AppCompatActivity {
                 it.putExtra("pwd",pwd);
                 startActivity(it);
 
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
 

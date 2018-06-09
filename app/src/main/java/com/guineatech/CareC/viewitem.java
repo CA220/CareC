@@ -2,6 +2,7 @@ package com.guineatech.CareC;
 
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,24 +57,29 @@ public class viewitem extends BaseAdapter {
         //當ListView被拖拉時會不斷觸發getView，為了避免重複加載必須加上這個判斷
         if (view == null) {
 
+
             holder = new ViewHolder();
 
             view = inflater.inflate(R.layout.listview_item, null);
-            holder.Name = view.findViewById(R.id.user);
-            holder.chart = view.findViewById(R.id.cht);
-            holder.peo = view.findViewById(R.id.peo);
-            holder.bed = view.findViewById(R.id.bed);
-            holder.heart = view.findViewById(R.id.heart);
-            holder.brd = view.findViewById(R.id.brd);
-            holder.sleep = view.findViewById(R.id.sleep);
+            holder.name = view.findViewById(R.id.tv_user);
+            holder.character = view.findViewById(R.id.tv_cht);
+            holder.userph = view.findViewById(R.id.iv_userph);
+            holder.bed = view.findViewById(R.id.iv_bed);
+            holder.heart = view.findViewById(R.id.iv_heart);
+            holder.breathe = view.findViewById(R.id.iv_breathe);
+            holder.iv_caregiver = view.findViewById(R.id.iv_caregiver);
+            holder.iv_inbed = view.findViewById(R.id.iv_inbed);
+            holder.iv_owner = view.findViewById(R.id.iv_owner);
 
-            holder.rlBorder = view.findViewById(R.id.llBorder);
+            holder.rlBorder = view.findViewById(R.id.rt_item);
 
-            holder.bed.setImageResource(R.drawable.ic_bed_80_40);
-            holder.heart.setImageResource(R.drawable.ic_heart_40dp);
-            holder.brd.setImageResource(R.drawable.ic_brd);
-            holder.sleep.setImageResource(R.drawable.ic_sleep);
-            holder.peo.setImageResource(R.drawable.ic_head_40dp);
+            holder.bed.setImageResource(R.drawable.ic_bed);
+            holder.heart.setImageResource(R.drawable.heart_xxxhdpi);
+            holder.breathe.setImageResource(R.drawable.ic_breathe);
+            holder.userph.setImageResource(R.mipmap.ic_launcher_round);
+            holder.iv_owner.setImageResource(R.drawable.king_xxxhdpi);
+            holder.iv_inbed.setImageResource(R.drawable.exit_xxxhdpi);
+            holder.iv_caregiver.setImageResource(R.drawable.defend_xxxhdpi);
 
             holder.rlBorder.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -91,23 +99,26 @@ public class viewitem extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
         try {
-            holder.Name.setText(ElementsData.getJSONObject(i).getString("nickname"));
+            holder.name.setText(ElementsData.getJSONObject(i).getString("nickname"));
+            Log.e("FS", ElementsData.getJSONObject(i).getString("deviceid"));
+            FirebaseMessaging.getInstance().subscribeToTopic(ElementsData.getJSONObject(i).getString("deviceid"));
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        holder.chart.setText("Owner");
+        holder.character.setText("Owner-");
         return view;
     }
 
     static class ViewHolder {
         RelativeLayout rlBorder;
-        TextView Name;
-        TextView chart;
-        ImageView peo;
+        TextView name;
+        TextView character;
+        ImageView userph, iv_caregiver, iv_owner, iv_inbed;
+
         ImageView bed;
         ImageView heart;
-        ImageView brd;
-        ImageView sleep;
+        ImageView breathe;
 
 
     }

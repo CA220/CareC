@@ -2,7 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.guineatech.CareC">
 
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /><!--auto start app -->
+    <uses-permission android:name="android.intent.action.BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -46,9 +49,8 @@
         <activity
             android:name=".Confirmd"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".Mainpage"
-            android:screenOrientation="portrait" />
+
+        <activity android:name=".Frame" />
         <activity
             android:name=".QR"
             android:screenOrientation="portrait" />
@@ -65,21 +67,6 @@
             android:name=".ForgotPassword"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".success"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".my_profile"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".username"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".birthday"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".district"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".notifications"
             android:screenOrientation="portrait" />
         <activity
@@ -87,6 +74,11 @@
             android:screenOrientation="portrait" />
         <activity android:name=".ClockActivity"
             android:screenOrientation="portrait"/>
+
+        <activity android:name=".Capt" />
+        <activity android:name=".addmattre" />
+        <activity android:name=".wakeme_clock" />
+
 
         <!--Service-->
         <service android:name=".backgroundservice" />
@@ -98,13 +90,16 @@
         <service android:name=".FcmMessageService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </service>
     </application>
     <!--Notification-->
     <meta-data
         android:name="com.google.firebase.messaging.default_notification_icon"
-        android:resource="@drawable/ic_add_black_24dp" />
+        android:resource="@mipmap/ic_launcher_round" />
 
     <meta-data
         android:name="com.google.firebase.messaging.default_notification_color"

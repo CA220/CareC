@@ -57,18 +57,18 @@ public class ForgotPassword extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forgot_password);
-        et_pwd = findViewById(R.id.et_pwd);
-        et_pwds = findViewById(R.id.et_pwds);
+        setContentView(R.layout.forgot_password);
+        et_pwd = findViewById(R.id.et_password);
+        et_pwds = findViewById(R.id.et_conpaswd);
         ed_code = findViewById(R.id.et_code);
-        ed_email = findViewById(R.id.et_Mail);
+        ed_email = findViewById(R.id.et_email);
 
         Intent it = this.getIntent();
 
         ed_email.setText(it.getStringExtra("Email"));
 
         //凡回見
-        ImageView backic = findViewById(R.id.back);
+        ImageView backic = findViewById(R.id.iv_back);
         backic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,12 +76,12 @@ public class ForgotPassword extends AppCompatActivity {
             }
         });
 
-        bt_OK = findViewById(R.id.ForgotPassword_button);
+        bt_OK = findViewById(R.id.bt_confirm);
         bt_OK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if (bt_OK.getText().toString().equals("Confirm")) {
+                if (bt_OK.getText().toString().equals("Confirm Email")) {
                     if (!ed_email.getText().toString().isEmpty()) {
                         Email = ed_email.getText().toString();
                         Email = Email.replace("@", "-at-");

@@ -1,28 +1,12 @@
 package com.guineatech.CareC;
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserCodeDeliveryDetails;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GenericHandler;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.VerificationHandler;
 
 /**
  * Created by CAHans on 2018/4/8.
  */
 
-public class ConfrimHome extends AppCompatActivity {
+public class ConfrimHome extends AppCompatActivity {/*
     private ProgressDialog waitDialog;
     private AlertDialog userDialog;
     //verification code
@@ -147,5 +131,5 @@ public class ConfrimHome extends AppCompatActivity {
             return true;
         }
         return onTouchEvent(ev);
-    }
+    }*/
 }

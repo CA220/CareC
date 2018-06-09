@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="40dp"
+    android:layout_gravity="top|center"
+    android:background="@drawable/button_xxxhdpi"
+
+    android:clickable="false"
+
+    android:focusable="false"
+    android:text="Logout"
+    android:textAlignment="center">
+
+</Button>

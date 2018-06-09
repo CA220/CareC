@@ -23,7 +23,7 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHan
 
 public class Rerister extends AppCompatActivity {
     EditText et_Mail,et_pwds,et_pwd;
-    Button nexts;
+    Button nexts, bt_sign;
     TextView comfim;
     private ProgressDialog waitDialog;
     private AlertDialog userDialog;
@@ -62,17 +62,17 @@ public class Rerister extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_rerister);
+        setContentView(R.layout.create_account);
 
 //        userDialog.setCancelable(false);
 
-        et_Mail = findViewById(R.id.et_Mail);
-        et_pwds = findViewById(R.id.et_pwds);
-        et_pwd = findViewById(R.id.et_pwd);
-        nexts = findViewById(R.id.nexts);
+        et_Mail = findViewById(R.id.et_email);
+        et_pwds = findViewById(R.id.et_conpasswd);
+        et_pwd = findViewById(R.id.et_password);
+        nexts = findViewById(R.id.bt_ris);
+        bt_sign = findViewById(R.id.bt_sign);
 
-
-        ImageView backic = findViewById(R.id.back);
+        ImageView backic = findViewById(R.id.iv_back);
         backic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,11 +99,17 @@ public class Rerister extends AppCompatActivity {
                     Toast.makeText(view.getContext(), "Can't null", Toast.LENGTH_LONG).show();
 
                 }
-
-
-
             }
         });
+        bt_sign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent it = new Intent(Rerister.this, Login.class);
+                startActivity(it);
+                finish();
+            }
+        });
+
     }
 
     private void showWaitDialog(String message) {
