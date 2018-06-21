@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.guineatech.CareC">
 
+    <permission
+        android:name="android.permission.CALL_PRIVILEGED"
+        android:protectionLevel="signature|privileged" />
+    <uses-permission android:name="android.permission.CALL_PHONE" /> <!--Phone call -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /><!--auto start app -->
     <uses-permission android:name="android.intent.action.BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SEND_SMS" />

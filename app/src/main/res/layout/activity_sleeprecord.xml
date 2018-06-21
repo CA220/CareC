@@ -7,15 +7,15 @@
     tools:context="com.example.oao.carebed.sleeprecord">
 
 
-    <ImageView
-        android:id="@+id/iv_spbg"
-        android:layout_width="180dp"
-        android:layout_height="120dp"
+    <!-- <ImageView
+         android:id="@+id/iv_spbg"
+         android:layout_width="180dp"
+         android:layout_height="120dp"
 
 
-        android:layout_below="@+id/toolbar"
-        android:adjustViewBounds="true"
-        app:srcCompat="@drawable/ccc_xxxhdpi" />
+         android:layout_below="@+id/toolbar"
+         android:adjustViewBounds="true"
+         app:srcCompat="@drawable/ccc_xxxhdpi" />-->
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -49,12 +49,13 @@
         app:srcCompat="@drawable/gear" />
 
     <ImageView
-        android:id="@+id/imageView12"
+        android:id="@+id/iv_bed_data"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_below="@+id/toolbar"
-        android:layout_marginTop="31dp"
-        android:layout_toEndOf="@+id/iv_spbg"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="16dp"
+        android:layout_toEndOf="@+id/tv_data"
         app:srcCompat="@drawable/gbed_xxxhdpi" />
 
     <ImageView
@@ -62,7 +63,8 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/imageView12"
+        android:adjustViewBounds="true"
+        android:layout_below="@+id/iv_bed_data"
         app:srcCompat="@drawable/gline_xxxhdpi" />
 
     <ImageView
@@ -73,6 +75,7 @@
         android:layout_below="@+id/tv_spdate"
         android:layout_marginStart="10dp"
         android:layout_marginTop="9dp"
+        android:visibility="invisible"
         app:srcCompat="@drawable/left_xxxhdpi" />
 
     <ImageView
@@ -82,6 +85,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/imageView14"
         android:layout_marginEnd="9dp"
+        android:visibility="invisible"
         app:srcCompat="@drawable/right_xxxhdpi" />
 
     <TextView
@@ -89,23 +93,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/imageView13"
-        android:layout_toEndOf="@+id/imageView12" />
+        android:layout_toEndOf="@+id/iv_bed_data" />
 
     <TextView
         android:id="@+id/tv_sptime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/imageView12"
-        android:layout_toEndOf="@+id/imageView12"
+        android:layout_alignTop="@+id/iv_bed_data"
+        android:layout_toEndOf="@+id/iv_bed_data"
 
         android:textSize="18sp" />
 
     <ImageView
-        android:id="@+id/imageView16"
+        android:id="@+id/iv_clan"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_above="@+id/imageView15"
-        android:layout_toEndOf="@+id/tv_sptime"
+        android:layout_alignTop="@+id/iv_bed_data"
+        android:layout_marginEnd="17dp"
+        android:layout_toStartOf="@+id/iv_setting"
         app:srcCompat="@drawable/date_xxxhdpi" />
 
     <TextView
@@ -120,9 +125,10 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/iv_spbg">
+        android:id="@+id/SV"
+        android:layout_below="@+id/imageView13">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -158,7 +164,7 @@
                     tools:ignore="RtlCompat" />
 
                 <TextView
-                    android:id="@+id/textView7"
+                    android:id="@+id/tv_heart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
@@ -219,7 +225,7 @@
                     tools:ignore="RtlCompat" />
 
                 <TextView
-                    android:id="@+id/textView10"
+                    android:id="@+id/tv_br"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
@@ -277,7 +283,7 @@
                     tools:ignore="RtlCompat" />
 
                 <TextView
-                    android:id="@+id/textView13"
+                    android:id="@+id/tv_sleep"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
@@ -308,7 +314,7 @@
                 android:background="#000000" />
 
             <LinearLayout
-
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="5dp"
@@ -363,17 +369,18 @@
                 android:layout_height="1px"
                 android:background="#000000" />
 
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/chart1"
-                android:layout_width="match_parent"
-                android:layout_height="180dp">
-
-            </com.github.mikephil.charting.charts.BarChart>
 
         </LinearLayout>
 
     </ScrollView>
 
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/chart1"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="240dp">
+
+    </com.github.mikephil.charting.charts.BarChart>
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
@@ -384,5 +391,14 @@
         android:text="Sleep Record"
         android:textColor="@android:color/white"
         android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tv_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/imageView14"
+        android:layout_alignTop="@+id/iv_bed_data"
+        android:text="1999/01/01"
+        android:textSize="30sp" />
 
 </RelativeLayout>

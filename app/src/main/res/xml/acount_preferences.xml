@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <Preference android:layout="@layout/preference_toolbar" />
-    <Preference android:layout="@layout/acount_main" />
+    <!--<Preference android:layout="@layout/acount_main" />-->
     <PreferenceCategory android:title="Basic Profile">
         <EditTextPreference
 
             android:icon="@drawable/user_xxxhdpi"
             android:key="name"
-            android:summary="Name"
+            android:summary="Enter you Name"
             android:title="Name" />
         <EditTextPreference
             android:icon="@drawable/email_xxxhdpi"
             android:key="email"
-            android:summary="email"
+            android:summary="Enter you email"
             android:title="Email" />
         <EditTextPreference
             android:icon="@drawable/phone_xxxhdpi"
             android:key="phone"
-            android:summary="phone number"
+            android:summary="Enter you phone number"
             android:title="Phone" />
     </PreferenceCategory>
     <PreferenceCategory android:title="Change Password">
@@ -26,10 +26,14 @@
             android:icon="@drawable/passwd_xxxhdpi"
             android:title="Enter New Password" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="Accessibility">
-        <Preference
-
-            android:title=" " />
+    <PreferenceCategory android:title="Language">
+        <ListPreference
+            android:key="Language"
+            android:title="Change Language"
+            android:entries="@array/list_language"
+            android:defaultValue="0"
+            android:summary="ENGLISH"
+            android:entryValues="@array/list_language_V" />
     </PreferenceCategory>
     <PreferenceCategory android:title="About">
         <Preference

@@ -41,10 +41,11 @@ public class FcmMessageService extends FirebaseMessagingService {
               */
 
                 if (remoteMessage.getData() != null)
-                    if (remoteMessage.getData().get("type").equals("C"))
+                    if (remoteMessage.getData().get("type").equals("CU"))
                 {
 
                  Intent   intent = new Intent(FcmMessageService.this, ClockActivity.class);
+                    intent.putExtra("type", remoteMessage.getData().get("type"));
                     tp = remoteMessage.getData().get("type");
                     Did = remoteMessage.getData().get("id");
                    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);                //時間
@@ -52,6 +53,8 @@ public class FcmMessageService extends FirebaseMessagingService {
                     manager.setExactAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), pendingIntent);
                 } else if (remoteMessage.getData().get("type").equals("B")) {
                         Intent intent = new Intent(FcmMessageService.this, ClockActivity.class);
+                        intent.putExtra("type", remoteMessage.getData().get("type"));
+
                         tp = remoteMessage.getData().get("type");
                         Did = remoteMessage.getData().get("id");
 
@@ -68,6 +71,7 @@ public class FcmMessageService extends FirebaseMessagingService {
                 // Handle message within 10 seconds
                 // handleNow();
             }
+            Log.e("FF", remoteMessage.getData().get("type"));
         }
 
         // Check if message contains a notification payload.

@@ -6,14 +6,17 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.renderscript.Sampler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONObject;
+import org.spongycastle.util.Integers;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -31,6 +34,7 @@ public class setDevice extends AppCompatActivity {
     ImageView line, iv_setting, iv_check, iv_res;
     String deid, na;
     TextView tv_sele, tv_fin;
+    String IOT_thing_r = "IOT_thing_r";
     int f = 0;
     private BroadcastReceiver counterActionReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
@@ -44,16 +48,27 @@ public class setDevice extends AppCompatActivity {
                 line.setImageDrawable(getResources().getDrawable(R.drawable.step3_xxxhdpi));
                 Log.e("DD", " " + intent.getStringExtra("IOT"));
                 //DB
-                String IOT_thing_r = "IOT_thing_r";
+
                 Intent i = new Intent();
                 i.setAction(IOT_thing_r);
                 i.putExtra("IOT", "STEP_3");
                 sendBroadcast(i);
-            } else if (intent.getStringExtra("IOT").equals("Eorro")) {
-                // Toast.makeText(getApplicationContext(),"Error "+intent.getStringExtra("msg"),Toast.LENGTH_LONG);
-            } else {
+            } else if (intent.getStringExtra("IOT").equals("STEP_3")) {
                 iv_check.setVisibility(View.VISIBLE);
                 fin();
+            } else if (intent.getStringExtra("IOT").equals("Eorro")) {
+                Toast.makeText(getApplicationContext(), "Error ", Toast.LENGTH_LONG).show();
+                bt_conn.setVisibility(View.VISIBLE);
+                bt_conn.setText("Close");
+                f = 2;
+            } else if (intent.getStringExtra("IOT").equals("\"is_add\"")) {
+                bt_conn.setVisibility(View.VISIBLE);
+                f = 1;
+            } else {
+                Toast.makeText(getApplicationContext(), "Error " + intent.getStringExtra("IOT"), Toast.LENGTH_LONG).show();
+                bt_conn.setVisibility(View.VISIBLE);
+                bt_conn.setText("Close");
+                f = 2;
             }
         }
     };
@@ -83,7 +98,6 @@ public class setDevice extends AppCompatActivity {
                     i.putExtra("DB", "R");
                     sendBroadcast(i);
                     finish();
-
                 }
             }
         });
@@ -92,7 +106,7 @@ public class setDevice extends AppCompatActivity {
         Intent it = this.getIntent();
         deid = it.getStringExtra("deviceid");
         na = it.getStringExtra("nickname");
-
+        Log.e("FFFFFF", deid + " " + na);
 
         //if(wifiAdmin.addNetwork(wifiAdmin.CreateWifiInfo(bcode, "12345678", 3)))
         //new DBadddata().execute();
@@ -120,9 +134,7 @@ public class setDevice extends AppCompatActivity {
         iv_res.setVisibility(View.VISIBLE);
 
 
-        bt_conn.setVisibility(View.VISIBLE);
-        f = 1;
-        // new DBadddata().execute();
+        new DBadddata().execute();
     }
 
     private class DBadddata extends AsyncTask<Void, Void, String>
@@ -148,7 +160,7 @@ public class setDevice extends AppCompatActivity {
                     jsonParam.put("deviceid", deid);
                     jsonParam.put("userid", AppHelper.userid);
                     jsonParam.put("nickname", na);
-                    Log.e("log", deid + na);
+                    // Log.e("log", deid + na);
                     wr.writeBytes(jsonParam.toString());
                     wr.flush();
                     wr.close();
@@ -156,17 +168,15 @@ public class setDevice extends AppCompatActivity {
                     BufferedReader bufReader = new BufferedReader(new InputStreamReader(is, "utf-8"), 8);
                     StringBuilder builder = new StringBuilder();
                     String line = null;
-                    while ((line = bufReader.readLine()) != null) {
-                        builder.append(line + "\n");
-                    }
+                    //  while ((line = ) != null) {
+                    result = bufReader.readLine();
+                    // }
                     is.close();
-                    result = builder.toString();
+                    // result = builder.toString();
                 } catch (Exception e) {
                     e.printStackTrace();
-
+                    return "Eorro";
                 }
-
-
                 Log.e("Log", result);
                 return result;
             }
@@ -176,14 +186,12 @@ public class setDevice extends AppCompatActivity {
         @Override
         protected void onPostExecute(String devicedata) {
             super.onPostExecute(devicedata);
-            if (devicedata.equals(deid + "is succeeded add")) {
 
-                bt_conn.setVisibility(View.VISIBLE);
-                f = 1;
-            } else {
-                Log.e("log", "Erorr");
+            Intent i = new Intent();
+            i.setAction(IOT_thing_r);
 
-            }
+            i.putExtra("IOT", devicedata);
+            sendBroadcast(i);
 
         }
     }

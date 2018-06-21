@@ -86,12 +86,12 @@ public class Frame extends AppCompatActivity {
         IntentFilter counterActionFilter = new IntentFilter("DB");
         registerReceiver(counterActionReceiver, counterActionFilter);
     }
-
+/*
     @Override
     protected void onPause() {
         super.onPause();
         unregisterReceiver(counterActionReceiver);
-    }
+    }*/
 
     public static class BottomNavigationViewHelper {
 

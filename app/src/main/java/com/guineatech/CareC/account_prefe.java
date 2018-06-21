@@ -32,10 +32,13 @@ public class account_prefe extends PreferenceFragment {
             accf.delete();
             File did = new File("/data/data/com.guineatech.CareC/shared_prefs", "userhas.xml");
             did.delete();
+            File clock = new File("/data/data/com.guineatech.CareC/shared_prefs", "clock.xml");
+            clock.delete();
+
             Intent it = new Intent();
             it.setClass(getActivity(), Sign_Rerister.class);
             startActivity(it);
-
+            getActivity().finish();
         }
         return true;// super.onPreferenceTreeClick(preferenceScreen, preference);
     }

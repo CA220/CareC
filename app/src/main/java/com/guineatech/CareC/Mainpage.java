@@ -51,21 +51,22 @@ public class Mainpage extends Fragment {
     }
 
 
-
-
-
-
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        lit.setAdapter(null);
+        new DBloaddata().execute();
+    }
 
     //勞USER 有哪一些DEVICE
-    private  class DBloaddata extends AsyncTask<Void, Void, String>
+    public class DBloaddata extends AsyncTask<Void, Void, String>
     {
 
         @Override
         protected String doInBackground(Void... voids) {
             //不是沒次都勞Data 更新或USER下拉才更新
             File file = new File("/data/data/com.guineatech.CareC/shared_prefs", "userhas.xml");
-            if (1 == 1)//!file.exists())
+            if (!file.exists())
 
             {
                 HttpURLConnection urlConnection = null;
@@ -145,20 +146,17 @@ public class Mainpage extends Fragment {
             }
             else
                 {
+                    Frame.sap.edit()
+                            .putString("device", devicedata)
+                            .commit();
                     Log.e("Log","No data");
-
                 }
+            //  lit.addFooterView();
 
         }
     }
 
+
 }
 
-/*
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-            }
-        });
- */

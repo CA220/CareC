@@ -4,88 +4,57 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="128dp"
-    tools:context="com.example.oao.carebed.alarm">
+    tools:context="com.example.oao.carebed.alarm"
+    android:id="@+id/rl_clock">
 
     <ImageView
-        android:id="@+id/imageView19"
-        android:layout_width="30dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="23dp"
-        android:layout_marginTop="7dp"
-        app:srcCompat="@drawable/more_xxxhdpi" />
-
-    <ImageView
-        android:id="@+id/imageView17"
+        android:id="@+id/iv_pr"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/imageView19"
+        android:layout_centerVertical="true"
         android:layout_gravity="center"
-        android:layout_marginStart="33dp"
+        android:layout_marginLeft="24dp"
         android:layout_weight="1"
         app:srcCompat="@mipmap/ic_launcher_round" />
 
     <TextView
-        android:id="@+id/textView17"
+        android:id="@+id/tv_nick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/imageView17"
-        android:layout_below="@+id/imageView17"
+        android:layout_alignStart="@+id/iv_pr"
+        android:layout_below="@+id/iv_pr"
         android:layout_marginTop="11dp"
         android:layout_weight="1"
         android:text="Joenee"
         android:textAlignment="center" />
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/imageView17"
-        android:layout_marginStart="45dp"
-        android:layout_toEndOf="@+id/textView17"
-        android:text="Alarm" />
-
     <Switch
-        android:id="@+id/switch3"
+        android:id="@+id/sw_clokn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/imageView19"
-        android:layout_alignTop="@+id/textView3" />
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="4dp" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tv_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imageView17"
+
         android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:text="6:00"
-        android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textView"
-        android:layout_toEndOf="@+id/textView"
-        android:text="AM"
-        android:textSize="18sp" />
-
+        android:textSize="30sp" />
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/iv_more"
         android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignStart="@+id/textView"
-        android:layout_alignTop="@+id/textView17"
-        app:srcCompat="@drawable/week_xxxhdpi" />
-
-    <TextView
-        android:id="@+id/textView19"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/imageView4"
-        android:layout_alignTop="@+id/imageView4"
-        android:text="Sun" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="7dp"
+        app:srcCompat="@drawable/more_xxxhdpi" />
 
 </RelativeLayout>

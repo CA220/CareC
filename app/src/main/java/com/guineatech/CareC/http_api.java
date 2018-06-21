@@ -1,5 +1,6 @@
 package com.guineatech.CareC;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 
 /**
@@ -19,5 +20,7 @@ public class http_api extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
+        Intent it = new Intent();
+
     }
 }

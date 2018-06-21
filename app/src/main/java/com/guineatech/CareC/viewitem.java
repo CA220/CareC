@@ -87,6 +87,7 @@ public class viewitem extends BaseAdapter {
                     Intent godt = new Intent();
                     try {
                         godt.putExtra("devicename", ElementsData.getJSONObject(i).getString("nickname"));
+                        godt.putExtra("deviceid", ElementsData.getJSONObject(i).getString("deviceid"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

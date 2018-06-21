@@ -71,6 +71,15 @@ public class Rerister extends AppCompatActivity {
         et_pwd = findViewById(R.id.et_password);
         nexts = findViewById(R.id.bt_ris);
         bt_sign = findViewById(R.id.bt_sign);
+        TextView tv_rec = findViewById(R.id.tv_confrimcode);
+        tv_rec.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent it = new Intent();
+                it.setClass(Rerister.this, ConfrimHome.class);
+                startActivity(it);
+            }
+        });
 
         ImageView backic = findViewById(R.id.iv_back);
         backic.setOnClickListener(new View.OnClickListener() {

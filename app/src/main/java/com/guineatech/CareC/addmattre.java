@@ -28,13 +28,15 @@ public class addmattre extends AppCompatActivity {
         bt_c = findViewById(R.id.bt_confirm);
         nickname = findViewById(R.id.et_name);
 
-        if (nickname.getText().toString().trim() != "") {
-            name = nickname.getText().toString();
-        } else name = bcode;
+
 
         bt_c.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (nickname.getText().toString().trim().length() > 0) {
+                    name = nickname.getText().toString();
+                } else name = bcode;
+
                 Intent it = new Intent(addmattre.this, wifi.class);
                 it.putExtra("bcode", bcode);
                 it.putExtra("nickname", name);
